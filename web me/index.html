@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>YHANG · Professional Resume</title>
+  <title>YHANG · Creative Developer</title>
   <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Google Fonts: Playfair Display + Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap" rel="stylesheet" />
   <style>
-    /* ----- RESET & BASE ----- */
     * {
       margin: 0;
       padding: 0;
@@ -18,18 +17,17 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0a0c12;
-      color: #d1d5db;
-      line-height: 1.6;
+      background-color: #faf9f6;
+      color: #2c2c2c;
+      line-height: 1.7;
       scroll-behavior: smooth;
       overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, h5 {
-      font-family: 'Space Grotesk', sans-serif;
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
       font-weight: 600;
-      letter-spacing: -0.02em;
-      color: #f1f5f9;
+      letter-spacing: -0.01em;
     }
 
     img {
@@ -46,16 +44,31 @@
       list-style: none;
     }
 
+    .accent {
+      color: #b76e4b;
+      font-style: italic;
+    }
+
     .highlight {
-      background: linear-gradient(120deg, #60a5fa 0%, #a78bfa 90%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #b76e4b;
+      position: relative;
+    }
+
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: rgba(183, 110, 75, 0.2);
+      z-index: -1;
+      border-radius: 2px;
     }
 
     section {
       padding: 5rem 2rem;
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
@@ -65,21 +78,23 @@
     }
 
     .section-title {
-      font-size: 2.4rem;
+      font-size: 2.6rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      color: #1a1a1a;
     }
 
     .section-subtitle {
-      color: #9ca3af;
+      color: #6b6b6b;
       font-size: 1.1rem;
+      font-style: italic;
     }
 
-    /* fade-up animation */
+    /* fade-up */
     .fade-up {
       opacity: 0;
       transform: translateY(30px);
-      transition: opacity 0.7s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.7s cubic-bezier(0.2, 0.9, 0.3, 1);
+      transition: opacity 0.7s ease, transform 0.7s ease;
     }
 
     .fade-up.visible {
@@ -87,101 +102,93 @@
       transform: translateY(0);
     }
 
-    /* ----- HEADER & NAVIGATION ----- */
+    /* ----- HEADER ----- */
     header {
-      background: rgba(10, 12, 18, 0.85);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      background: rgba(250, 249, 246, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid #e5e0d8;
     }
 
     nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2.5rem;
-      max-width: 1300px;
+      padding: 1.2rem 2.5rem;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
     .logo {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      font-family: 'Playfair Display', serif;
       font-weight: 700;
-      font-size: 1.5rem;
-      color: white;
+      font-size: 1.6rem;
+      color: #1a1a1a;
       letter-spacing: -0.5px;
     }
 
-    .logo i {
-      color: #60a5fa;
+    .logo span {
+      color: #b76e4b;
     }
 
     .nav-links {
       display: flex;
-      gap: 2.2rem;
+      gap: 2.5rem;
       align-items: center;
     }
 
     .nav-links li a {
       font-weight: 500;
-      font-size: 0.95rem;
-      color: #b9c2d4;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
+      font-size: 0.9rem;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       transition: 0.2s;
       position: relative;
     }
 
-    .nav-links li a i {
-      font-size: 0.9rem;
-      color: #60a5fa;
-    }
-
     .nav-links li a:hover,
     .nav-links li a.active {
-      color: white;
+      color: #1a1a1a;
     }
 
     .nav-links li a.active::after {
       content: '';
       position: absolute;
-      bottom: -6px;
+      bottom: -4px;
       left: 0;
-      width: 55%;
+      width: 100%;
       height: 2px;
-      background: #60a5fa;
-      border-radius: 2px;
+      background: #b76e4b;
     }
 
     .nav-cta {
-      background: #2563eb;
+      background: #1a1a1a;
       border: none;
       color: white;
-      font-weight: 600;
+      font-weight: 500;
       padding: 0.6rem 1.8rem;
-      border-radius: 40px;
+      border-radius: 2px;
       cursor: pointer;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.03em;
       transition: 0.25s;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      text-transform: uppercase;
+      font-size: 0.85rem;
     }
 
     .nav-cta:hover {
-      background: #3b82f6;
-      box-shadow: 0 8px 18px rgba(59, 130, 246, 0.4);
+      background: #b76e4b;
     }
 
     .hamburger {
       display: none;
-      font-size: 1.8rem;
-      color: white;
+      font-size: 1.5rem;
       cursor: pointer;
+      color: #1a1a1a;
     }
 
     /* ----- HERO ----- */
@@ -198,17 +205,19 @@
     }
 
     .hero-title {
-      font-size: clamp(2.5rem, 6vw, 4.2rem);
-      font-weight: 800;
-      line-height: 1.15;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.2;
       margin-bottom: 1.5rem;
+      color: #1a1a1a;
     }
 
     .hero-subtitle {
-      font-size: 1.2rem;
-      color: #a0aec0;
-      max-width: 540px;
+      font-size: 1.15rem;
+      color: #555;
+      max-width: 500px;
       margin-bottom: 2.5rem;
+      line-height: 1.8;
     }
 
     .hero-buttons {
@@ -220,38 +229,35 @@
 
     .cta-button {
       padding: 0.9rem 2.2rem;
-      border-radius: 50px;
+      border-radius: 2px;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
       cursor: pointer;
       border: none;
       transition: 0.3s;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .cta-button.primary {
-      background: #2563eb;
+      background: #b76e4b;
       color: white;
-      box-shadow: 0 10px 20px -8px #1e3a8a;
     }
 
     .cta-button.primary:hover {
-      background: #3b82f6;
-      transform: translateY(-2px);
+      background: #9c5a3c;
     }
 
     .cta-button.secondary {
       background: transparent;
-      border: 1.5px solid #334155;
-      color: #e2e8f0;
+      border: 2px solid #d4c5b9;
+      color: #4a4a4a;
     }
 
     .cta-button.secondary:hover {
-      border-color: #60a5fa;
-      background: rgba(96, 165, 250, 0.06);
+      border-color: #b76e4b;
+      color: #b76e4b;
     }
 
     .hero-stats {
@@ -260,20 +266,22 @@
     }
 
     .stat h3 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 700;
-      color: white;
+      color: #b76e4b;
     }
 
     .stat p {
-      color: #94a3b8;
+      color: #777;
       font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .hero-image {
       flex: 1 1 380px;
       position: relative;
-      height: 380px;
+      height: 400px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -281,26 +289,25 @@
 
     .floating-card {
       position: absolute;
-      background: rgba(20, 28, 45, 0.8);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      padding: 1.2rem 1.8rem;
+      background: white;
+      border: 1px solid #e8e0d5;
+      border-radius: 2px;
+      padding: 1rem 1.8rem;
       display: flex;
       align-items: center;
       gap: 0.8rem;
-      color: white;
-      box-shadow: 0 20px 35px -15px rgba(0, 0, 0, 0.6);
-      animation: float 5.5s infinite ease-in-out;
+      color: #2c2c2c;
+      box-shadow: 0 15px 30px -10px rgba(0,0,0,0.08);
+      animation: float 5s infinite ease-in-out;
     }
 
-    .card1 { top: 5%; left: 5%; animation-delay: 0s; }
-    .card2 { bottom: 20%; right: 5%; animation-delay: 1.4s; }
-    .card3 { top: 55%; left: 10%; animation-delay: 2.6s; }
+    .card1 { top: 5%; left: 0%; animation-delay: 0s; }
+    .card2 { bottom: 20%; right: 0%; animation-delay: 1.5s; }
+    .card3 { top: 50%; left: 15%; animation-delay: 2.8s; }
 
     @keyframes float {
       0% { transform: translateY(0px); }
-      50% { transform: translateY(-12px); }
+      50% { transform: translateY(-10px); }
       100% { transform: translateY(0px); }
     }
 
@@ -308,7 +315,7 @@
     .about-content {
       display: flex;
       flex-wrap: wrap;
-      gap: 3rem;
+      gap: 4rem;
       align-items: center;
     }
 
@@ -319,6 +326,12 @@
     .about-text h3 {
       font-size: 2rem;
       margin-bottom: 1.2rem;
+      color: #1a1a1a;
+    }
+
+    .about-text p {
+      color: #555;
+      line-height: 1.8;
     }
 
     .features {
@@ -332,24 +345,24 @@
       align-items: center;
       gap: 0.8rem;
       font-weight: 500;
-      color: #e5e7eb;
+      color: #444;
     }
 
     .features i {
-      color: #60a5fa;
-      font-size: 1.2rem;
+      color: #b76e4b;
+      font-size: 1.1rem;
     }
 
     .learn-more {
       background: none;
       border: none;
-      color: #60a5fa;
+      border-bottom: 2px solid #b76e4b;
+      color: #b76e4b;
       font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
+      padding-bottom: 4px;
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
     }
 
     .about-image {
@@ -359,9 +372,9 @@
     }
 
     .about-card img {
-      border-radius: 36px;
-      box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.7);
-      border: 2px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+      border: 1px solid #e0d6cc;
     }
 
     /* ----- SERVICES ----- */
@@ -372,70 +385,96 @@
     }
 
     .service-card {
-      background: #111827;
-      border-radius: 28px;
-      padding: 2rem 1.5rem;
+      background: white;
+      border-radius: 4px;
+      padding: 2rem 1.8rem;
       transition: 0.3s;
-      border: 1px solid #1f2a41;
+      border: 1px solid #e8e0d5;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.03);
     }
 
     .service-card:hover {
-      border-color: #3b82f6;
-      transform: translateY(-6px);
-      background: #1a2338;
+      border-color: #b76e4b;
+      transform: translateY(-4px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.06);
     }
 
     .service-icon {
-      font-size: 2rem;
-      color: #60a5fa;
+      font-size: 1.8rem;
+      color: #b76e4b;
       margin-bottom: 1.5rem;
     }
 
-    .service-link {
-      color: #60a5fa;
-      font-weight: 600;
+    .service-card h3 {
+      color: #1a1a1a;
+      margin-bottom: 0.8rem;
     }
 
-    /* ----- EDUCATION & TOOLS ----- */
+    .service-card p {
+      color: #666;
+      font-size: 0.95rem;
+    }
+
+    .service-link {
+      color: #b76e4b;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-top: 1rem;
+      display: inline-block;
+    }
+
+    /* ----- EDUCATION ----- */
     .resume-education {
-      background: #0f1420;
-      border-radius: 32px;
+      background: white;
+      border-radius: 4px;
       padding: 3rem 2.5rem;
-      border: 1px solid #1f2a41;
+      border: 1px solid #e8e0d5;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.02);
     }
 
     .education-list p {
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
       display: flex;
       align-items: baseline;
-      gap: 0.8rem;
+      gap: 1rem;
       font-size: 1.05rem;
+      color: #444;
     }
 
+    .education-list i {
+      color: #b76e4b;
+      font-size: 1.2rem;
+    }
+
+    /* ----- TOOLS ----- */
     .tools-section {
-      background: #111827;
-      border-radius: 32px;
+      background: white;
+      border-radius: 4px;
       padding: 2.5rem;
-      margin-top: 3rem;
-      border: 1px solid #1f2a41;
+      border: 1px solid #e8e0d5;
     }
 
     .tools-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 2rem 3rem;
+      gap: 1.5rem;
       margin-top: 1.5rem;
     }
 
     .tool-item {
-      background: #1a2236;
-      padding: 0.8rem 1.8rem;
-      border-radius: 40px;
+      background: #f5f0ea;
+      padding: 0.7rem 1.8rem;
+      border-radius: 2px;
       font-weight: 600;
-      color: #e2e8f0;
+      color: #3a3a3a;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
       display: flex;
       align-items: center;
       gap: 0.6rem;
+      border: 1px solid #e0d6cc;
     }
 
     /* ----- TESTIMONIALS ----- */
@@ -446,11 +485,13 @@
     }
 
     .testimonial-card {
-      background: #131a2c;
-      border-radius: 24px;
-      padding: 2rem;
+      background: white;
+      border-radius: 4px;
+      padding: 2.2rem;
       flex: 1 1 280px;
-      border: 1px solid #2d3748;
+      border: 1px solid #e8e0d5;
+      font-style: italic;
+      color: #444;
     }
 
     .testimonial-author {
@@ -458,11 +499,12 @@
       align-items: center;
       gap: 0.8rem;
       margin-top: 1.5rem;
+      font-style: normal;
     }
 
     .testimonial-author img {
-      width: 48px;
-      height: 48px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       object-fit: cover;
     }
@@ -488,8 +530,8 @@
     }
 
     .contact-item i {
-      font-size: 1.6rem;
-      color: #60a5fa;
+      font-size: 1.4rem;
+      color: #b76e4b;
     }
 
     .contact-form {
@@ -501,42 +543,59 @@
 
     .contact-form input,
     .contact-form textarea {
-      background: #0f131e;
-      border: 1px solid #2d3748;
-      border-radius: 14px;
+      background: white;
+      border: 1px solid #d4c5b9;
+      border-radius: 2px;
       padding: 1rem;
-      color: white;
       font-family: 'Inter', sans-serif;
+      color: #2c2c2c;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #b76e4b;
     }
 
     .submit-btn {
-      background: #2563eb;
+      background: #b76e4b;
       border: none;
       padding: 1rem;
-      border-radius: 40px;
+      border-radius: 2px;
       color: white;
       font-weight: 600;
       cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .submit-btn:hover {
+      background: #9c5a3c;
     }
 
     /* ----- FOOTER ----- */
     footer {
-      background: #070b14;
+      background: #f0ebe3;
       padding: 3rem 2rem 1.5rem;
-      border-top: 1px solid #1e293b;
+      border-top: 1px solid #d4c5b9;
     }
 
     .footer-content {
       display: flex;
       flex-wrap: wrap;
       gap: 2.5rem;
-      max-width: 1200px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
     .social-links a {
-      margin-right: 1rem;
-      font-size: 1.3rem;
+      margin-right: 1.2rem;
+      font-size: 1.2rem;
+      color: #555;
+    }
+
+    .social-links a:hover {
+      color: #b76e4b;
     }
 
     .newsletter-form {
@@ -546,19 +605,20 @@
 
     .newsletter-form input {
       flex: 1;
-      background: #1a2035;
-      border: none;
+      background: white;
+      border: 1px solid #d4c5b9;
       padding: 0.7rem;
-      border-radius: 8px 0 0 8px;
-      color: white;
+      border-radius: 2px 0 0 2px;
+      font-family: 'Inter', sans-serif;
     }
 
     .newsletter-form button {
-      background: #2563eb;
+      background: #1a1a1a;
       border: none;
       padding: 0 1.2rem;
-      border-radius: 0 8px 8px 0;
+      border-radius: 0 2px 2px 0;
       color: white;
+      cursor: pointer;
     }
 
     @media (max-width: 768px) {
@@ -572,14 +632,15 @@
         top: 70px;
         left: 0;
         width: 100%;
-        background: #0a0c12;
+        background: #faf9f6;
         padding: 2rem;
+        border-bottom: 1px solid #e5e0d8;
       }
       .nav-links.active {
         display: flex;
       }
       .hero-image {
-        height: 300px;
+        height: 280px;
       }
     }
   </style>
@@ -587,18 +648,16 @@
 <body>
   <header>
     <nav>
-      <div class="logo">
-        <i class="fas fa-bolt"></i> <span>hongYhang</span>
-      </div>
+      <div class="logo">hong<span>Yhang</span></div>
       <div class="hamburger" id="hamburger">
         <i class="fas fa-bars"></i>
       </div>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
-        <li><a href="#services"><i class="fas fa-cogs"></i> Resume</a></li>
-        <li><a href="#portfolio"><i class="fas fa-briefcase"></i> Portfolio</a></li>
-        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Resume</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
       <button class="nav-cta" id="resumeCta">Resume</button>
     </nav>
@@ -611,8 +670,8 @@
         <h1 class="hero-title">Crafting Digital <span class="highlight">Experiences</span> That Inspire</h1>
         <p class="hero-subtitle">I'm Yhang — front-end developer & creative problem solver. I build sleek, responsive web apps that leave a lasting impression.</p>
         <div class="hero-buttons">
-          <button class="cta-button primary" id="getStartedBtn"><i class="fas fa-rocket"></i> Get Started</button>
-          <button class="cta-button secondary" id="viewWorkBtn"><i class="fas fa-play-circle"></i> View Work</button>
+          <button class="cta-button primary" id="getStartedBtn">Get Started</button>
+          <button class="cta-button secondary" id="viewWorkBtn">View Work</button>
         </div>
         <div class="hero-stats">
           <div class="stat"><h3>2</h3><p>Projects</p></div>
@@ -620,9 +679,9 @@
         </div>
       </div>
       <div class="hero-image">
-        <div class="floating-card card1"><i class="fas fa-laptop-code"></i><h4>Web Dev</h4></div>
-        <div class="floating-card card2"><i class="fas fa-mobile-alt"></i><h4>Mobile First</h4></div>
-        <div class="floating-card card3"><i class="fas fa-palette"></i><h4>UI/UX</h4></div>
+        <div class="floating-card card1"><i class="fas fa-laptop-code" style="color:#b76e4b;"></i> Web Dev</div>
+        <div class="floating-card card2"><i class="fas fa-mobile-alt" style="color:#b76e4b;"></i> Mobile First</div>
+        <div class="floating-card card3"><i class="fas fa-palette" style="color:#b76e4b;"></i> UI/UX</div>
       </div>
     </section>
 
@@ -634,7 +693,7 @@
       </div>
       <div class="about-content">
         <div class="about-text">
-          <h3>I turn ideas into digital realities</h3>
+          <h3>I turn ideas into <span class="accent">digital realities</span></h3>
           <p>Hi, I'm Yhang — a dedicated web developer who loves blending smooth animations with clean code. I focus on performance, accessibility, and delightful user experiences.</p>
           <ul class="features">
             <li><i class="fas fa-check-circle"></i> 15+ modern projects completed</li>
@@ -642,20 +701,20 @@
             <li><i class="fas fa-check-circle"></i> Tailwind / CSS / React ready</li>
             <li><i class="fas fa-check-circle"></i> Fast & interactive prototypes</li>
           </ul>
-          <button class="learn-more" id="contactFromAbout">Contact me <i class="fas fa-arrow-right"></i></button>
+          <button class="learn-more" id="contactFromAbout">Contact me →</button>
         </div>
         <div class="about-image">
           <div class="about-card">
-            <img src="https://i.ibb.co/yckLBXp0/photo-2026-02-03-21-33-39.jpg" alt="Yhang profile" style="width:100%;max-width:280px;border-radius:32px;">
+            <img src="https://i.ibb.co/yckLBXp0/photo-2026-02-03-21-33-39.jpg" alt="Yhang profile" style="width:100%;max-width:280px;border-radius:4px;">
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SERVICES / RESUME -->
+    <!-- SERVICES -->
     <section id="services" class="services fade-up">
       <div class="section-header">
-        <h2 class="section-title"> My <span class="highlight"> Services </span></h2>
+        <h2 class="section-title">My <span class="highlight">Services</span></h2>
         <p class="section-subtitle">What I deliver to boost your brand</p>
       </div>
       <div class="services-grid">
@@ -666,21 +725,21 @@
       </div>
     </section>
 
-    <!-- EDUCATION + EXPERIENCE -->
+    <!-- EDUCATION -->
     <section class="resume-education fade-up">
       <div class="section-header" style="text-align: left; margin-bottom: 2rem;">
         <h2 class="section-title">Education & <span class="highlight">Experience</span></h2>
       </div>
       <div class="education-list">
-        <p><i class="fas fa-graduation-cap" style="color:#60a5fa;"></i> <strong>2016 - 2021:</strong> General K12 Education at Chea Sim Samaki Highschool</p>
-        <p><i class="fas fa-laptop-code" style="color:#60a5fa;"></i> <strong>2022 – 2024:</strong> Coding & Programming with Python (Gdemy short course)</p>
-        <p><i class="fas fa-university" style="color:#60a5fa;"></i> <strong>2021 - 2026:</strong> Information Technology at Royal University of Phnom Penh · Research, design, and prototype effective websites and apps.</p>
+        <p><i class="fas fa-graduation-cap"></i> <strong>2016 - 2021:</strong> General K12 Education at Chea Sim Samaki Highschool</p>
+        <p><i class="fas fa-laptop-code"></i> <strong>2022 – 2024:</strong> Coding & Programming with Python (Gdemy short course)</p>
+        <p><i class="fas fa-university"></i> <strong>2021 - 2026:</strong> Information Technology at Royal University of Phnom Penh · Research, design, and prototype effective websites and apps.</p>
       </div>
     </section>
 
-    <!-- FAVOURITE TOOLS -->
+    <!-- TOOLS -->
     <section class="tools-section fade-up">
-      <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">My favourite <span class="highlight">Framework & Tools</span></h2>
+      <h2 style="font-size: 2rem; margin-bottom: 0.5rem; font-family: 'Playfair Display', serif;">My favourite <span class="highlight">Framework & Tools</span></h2>
       <div class="tools-grid">
         <div class="tool-item"><i class="fab fa-git-alt"></i> Git</div>
         <div class="tool-item"><i class="fab fa-telegram-plane"></i> Telegram API</div>
@@ -698,14 +757,14 @@
       </div>
       <div class="testimonials-container">
         <div class="testimonial-card">
-          <p>“Yhang built our agency site with incredible attention to detail. The animations feel premium.”</p>
+          <p>"Yhang built our agency site with incredible attention to detail. The animations feel premium."</p>
           <div class="testimonial-author">
             <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="client">
             <div><h4>Michael Chen</h4><p>Creative Director</p></div>
           </div>
         </div>
         <div class="testimonial-card">
-          <p>“My portfolio got a 200% engagement boost after the redesign. Super creative!”</p>
+          <p>"My portfolio got a 200% engagement boost after the redesign. Super creative!"</p>
           <div class="testimonial-author">
             <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="client">
             <div><h4>Priya Sharma</h4><p>Startup Founder</p></div>
@@ -731,7 +790,7 @@
           <input type="email" placeholder="Your Email" required>
           <input type="text" placeholder="Subject">
           <textarea placeholder="Tell me about your project..." rows="4" required></textarea>
-          <button type="submit" class="submit-btn">Send Message <i class="fas fa-paper-plane"></i></button>
+          <button type="submit" class="submit-btn">Send Message</button>
         </form>
       </div>
     </section>
@@ -740,7 +799,7 @@
   <footer>
     <div class="footer-content">
       <div class="footer-section">
-        <div class="logo"><i class="fas fa-code"></i><span>hongYhang</span></div>
+        <div class="logo">hong<span>Yhang</span></div>
         <p>Creative developer focused on modern minimalism.</p>
         <div class="social-links">
           <a href="#"><i class="fab fa-github"></i></a>
@@ -767,87 +826,56 @@
       </div>
     </div>
     <div class="footer-bottom" style="text-align:center; margin-top:2rem;">
-      <p>© 2025 Yhang · Designed with <i class="fas fa-heart" style="color:#2563eb;"></i> Clean & animated</p>
+      <p>© 2025 Yhang · Designed with <i class="fas fa-heart" style="color:#b76e4b;"></i> Clean & minimal</p>
     </div>
   </footer>
 
   <script>
     (function() {
-      // fade-up scroll animation
       const fadeElements = document.querySelectorAll('.fade-up');
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
+          if (entry.isIntersecting) entry.target.classList.add('visible');
         });
-      }, { threshold: 0.2 });
+      }, { threshold: 0.15 });
       fadeElements.forEach(el => observer.observe(el));
 
-      // mobile menu toggle
       const hamburger = document.getElementById('hamburger');
       const navLinks = document.getElementById('navLinks');
-      if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => {
-          navLinks.classList.toggle('active');
-        });
-      }
+      hamburger?.addEventListener('click', () => navLinks.classList.toggle('active'));
 
-      // active nav link on scroll
       const navItems = document.querySelectorAll('.nav-links a');
       window.addEventListener('scroll', () => {
         let current = '';
         document.querySelectorAll('section[id]').forEach(section => {
-          const sectionTop = section.offsetTop - 100;
-          if (window.scrollY >= sectionTop) {
-            current = section.getAttribute('id');
-          }
+          if (window.scrollY >= section.offsetTop - 120) current = section.getAttribute('id');
         });
         navItems.forEach(link => {
           link.classList.remove('active');
-          if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-          }
+          if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
         });
       });
 
-      // button interactions
-      document.getElementById('getStartedBtn')?.addEventListener('click', () => {
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-      });
+      document.getElementById('getStartedBtn')?.addEventListener('click', () => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }));
       document.getElementById('viewWorkBtn')?.addEventListener('click', () => {
-        const portfolio = document.getElementById('portfolio');
-        if (portfolio) portfolio.scrollIntoView({ behavior: 'smooth' });
-        else alert('Portfolio section will be updated soon!');
+        const p = document.getElementById('portfolio');
+        p ? p.scrollIntoView({ behavior: 'smooth' }) : alert('Portfolio coming soon!');
       });
-      document.getElementById('resumeCta')?.addEventListener('click', () => {
-        document.getElementById('services').scrollIntoView({ behavior: 'smooth' });
-      });
-      document.getElementById('contactFromAbout')?.addEventListener('click', () => {
-        document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
-      });
+      document.getElementById('resumeCta')?.addEventListener('click', () => document.getElementById('services').scrollIntoView({ behavior: 'smooth' }));
+      document.getElementById('contactFromAbout')?.addEventListener('click', () => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' }));
 
-      // form submit
-      const form = document.getElementById('demoForm');
-      form?.addEventListener('submit', (e) => {
+      document.getElementById('demoForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
-        alert('Thank you! Your message has been sent (demo).');
-        form.reset();
+        alert('Thank you! Message sent (demo).');
+        e.target.reset();
       });
 
-      // newsletter
       document.querySelector('.newsletter-form button')?.addEventListener('click', () => {
-        const email = document.querySelector('.newsletter-form input');
-        if (email && email.value.includes('@')) alert('Subscribed!');
-        else alert('Enter a valid email.');
+        const inp = document.querySelector('.newsletter-form input');
+        inp && inp.value.includes('@') ? alert('Subscribed!') : alert('Enter valid email.');
       });
 
-      document.querySelectorAll('.service-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          alert('Detailed service info coming soon.');
-        });
-      });
+      document.querySelectorAll('.service-link').forEach(l => l.addEventListener('click', e => { e.preventDefault(); alert('Details coming soon.'); }));
     })();
   </script>
 </body>
