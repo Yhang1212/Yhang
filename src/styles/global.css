@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color: #17201d;
+  background: #f8f8f5;
+  line-height: 1.55;
+  font-weight: 400;
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #17201d;
+  --muted: #727a75;
+  --paper: #f8f8f5;
+  --white: #fff;
+  --line: #e5e8e2;
+  --green: #1b61ac;
+  --green-dark: #154c87;
+  --mint: #e8f0f8;
+  --serif: 'Manrope', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { min-width: 320px; min-height: 100vh; background: var(--paper); color: var(--ink); }
+#root { min-height: 100vh; }
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; border: 0; font: inherit; }
+img { display: block; max-width: 100%; }
+.container { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+section { padding: 96px 0; }
+section[id] { scroll-margin-top: 92px; }
+h1, h2, h3 { font-family: var(--serif); line-height: 1.12; letter-spacing: -0.045em; }
+h1 { font-weight: 600; }
+h2 { font-size: clamp(2rem, 3.4vw, 3rem); font-weight: 600; }
+h3 { font-weight: 600; }
+p { color: var(--muted); }
+.eyebrow, .section-tag, .small-title, .section-eyebrow {
+  display: inline-flex; align-items: center; gap: 9px; margin-bottom: 14px;
+  color: var(--green); font-size: 11px; font-weight: 700; letter-spacing: .17em; text-transform: uppercase;
+}
+.eyebrow::before, .section-tag::before, .small-title::before, .section-eyebrow::before {
+  content: ''; width: 19px; height: 1px; background: currentColor;
+}
+.section-heading { max-width: 650px; margin-bottom: 38px; }
+.section-heading h2 { margin-bottom: 13px; }
+.section-heading > p:last-child { max-width: 550px; font-size: 16px; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+.card { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--white); }
+.card p { margin: 0; }
+::selection { background: #dbe8dd; color: var(--ink); }
+:focus-visible { outline: 3px solid #83a990; outline-offset: 3px; }
+
+@media (max-width: 640px) {
+  .container { width: min(100% - 32px, 1180px); }
+  section { padding: 68px 0; }
+}
+

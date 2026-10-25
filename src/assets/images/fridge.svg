@@ -1,0 +1,31 @@
+<svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="body" x1="185" y1="88" x2="432" y2="528" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FDFEFC"/><stop offset=".48" stop-color="#E7ECE7"/><stop offset="1" stop-color="#C9D2CB"/>
+    </linearGradient>
+    <linearGradient id="door" x1="210" y1="120" x2="420" y2="510" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAF7"/><stop offset="1" stop-color="#E3E9E3"/>
+    </linearGradient>
+    <linearGradient id="side" x1="418" y1="95" x2="452" y2="510" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C8D0C9"/><stop offset="1" stop-color="#AEB9B0"/>
+    </linearGradient>
+    <filter id="shadow" x="111" y="48" width="381" height="535" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+  </defs>
+  <ellipse cx="306" cy="535" rx="135" ry="19" fill="#405247" fill-opacity=".15" filter="url(#shadow)"/>
+  <path d="M190 116C190 99.431 203.431 86 220 86H400C416.569 86 430 99.431 430 116V501H190V116Z" fill="url(#body)" stroke="#BFC9C0" stroke-width="2"/>
+  <path d="M430 109L451 123V493L430 501V109Z" fill="url(#side)"/>
+  <path d="M202 119C202 108.507 210.507 100 221 100H399V297H202V119Z" fill="url(#door)" stroke="#D5DDD5"/>
+  <path d="M202 306H399V486H221C210.507 486 202 477.493 202 467V306Z" fill="url(#door)" stroke="#D5DDD5"/>
+  <path d="M387 126V270" stroke="#9BA89D" stroke-width="5" stroke-linecap="round"/>
+  <path d="M387 332V458" stroke="#9BA89D" stroke-width="5" stroke-linecap="round"/>
+  <path d="M202 301H399" stroke="#BCC7BD" stroke-width="2"/>
+  <rect x="224" y="126" width="55" height="23" rx="11.5" fill="#1B61AC"/>
+  <circle cx="236" cy="137.5" r="2" fill="#E6EFE7"/><circle cx="245" cy="137.5" r="2" fill="#E6EFE7"/><circle cx="254" cy="137.5" r="2" fill="#E6EFE7"/>
+  <text x="288" y="142" fill="#758278" font-family="Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="2">HAILANG</text>
+  <path d="M216 501H407" stroke="#AAB5AC" stroke-width="4" stroke-linecap="round"/>
+  <path d="M228 505L224 524M394 505L398 524" stroke="#87948A" stroke-width="7" stroke-linecap="round"/>
+  <path d="M205 111C205 102.716 211.716 96 220 96" stroke="white" stroke-opacity=".9" stroke-width="3" stroke-linecap="round"/>
+</svg>
+

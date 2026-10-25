@@ -1,0 +1,28 @@
+.navbar {
+  position: sticky; top: 0; z-index: 50; width: 100%;
+  background: rgba(248, 248, 245, .92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(23, 32, 29, .08);
+}
+.nav-container { width: min(1180px, calc(100% - 48px)); height: 78px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+.logo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--serif); font-size: 15px; font-weight: 800; letter-spacing: .13em; line-height: 1; }
+.logo small { display: block; margin-top: 5px; color: #8a918b; font-family: 'DM Sans', sans-serif; font-size: 8px; font-weight: 600; letter-spacing: .17em; }
+.logo-mark { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 50%; background: var(--green); color: white; font-size: 17px; letter-spacing: -.05em; }
+.desktop-menu { display: flex; align-items: center; gap: clamp(20px, 3vw, 38px); }
+.desktop-menu a, .login-link { color: #59625d; font-size: 13px; font-weight: 600; transition: color .2s ease; }
+.desktop-menu a:hover, .login-link:hover { color: var(--green); }
+.nav-actions { display: flex; align-items: center; gap: 22px; }
+.login-link { padding: 8px 0; background: transparent; }
+.contact-btn { display: inline-flex; align-items: center; gap: 9px; padding: 12px 17px; border-radius: 5px; background: var(--green); color: white; font-size: 12px; font-weight: 700; transition: background .2s ease, transform .2s ease; }
+.contact-btn:hover { transform: translateY(-1px); background: var(--green-dark); }
+.menu-toggle { display: none; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--mint); color: var(--ink); }
+@media (max-width: 760px) {
+  .nav-container { height: 68px; width: calc(100% - 32px); }
+  .desktop-menu { display: none; position: absolute; top: 68px; left: 0; right: 0; padding: 16px 24px 22px; flex-direction: column; align-items: stretch; gap: 0; background: var(--paper); border-bottom: 1px solid var(--line); box-shadow: 0 14px 24px #17201d0c; }
+  .desktop-menu.is-open { display: flex; }
+  .desktop-menu a { padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .desktop-menu a:last-child { border: 0; }
+  .nav-actions { gap: 14px; }
+  .contact-btn { padding: 10px 12px; font-size: 11px; }
+  .menu-toggle { display: inline-flex; }
+}
+@media (max-width: 420px) { .login-link { display: none; } }

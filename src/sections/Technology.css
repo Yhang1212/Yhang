@@ -1,0 +1,9 @@
+#technology { background: #fafbf8; }
+#technology .section-heading { margin-bottom: 35px; }
+#technology .card-grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+#technology .card { position: relative; min-height: 185px; display: flex; align-items: flex-end; padding: 24px; border: 1px solid var(--line); border-radius: 4px; background: linear-gradient(145deg, #f1f4ef, #fff); box-shadow: none; }
+#technology .card::before { content: '01'; position: absolute; top: 20px; left: 24px; color: #a3b0a5; font-family: var(--serif); font-size: 13px; }
+#technology .card:nth-child(2)::before { content: '02'; }
+#technology .card:nth-child(3)::before { content: '03'; }
+#technology .card p { max-width: 270px; color: #38453c; font-family: var(--serif); font-size: 17px; line-height: 1.5; }
+@media(max-width:640px) { #technology .card-grid { grid-template-columns: 1fr; } #technology .card { min-height: 150px; } }
