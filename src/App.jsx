@@ -8,7 +8,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState('home');
 
   if (currentPage === 'products') {
-    return <Products />;
+    return <Products onNavigate={setCurrentPage} />;
   }
 
   if (currentPage === 'admin') {

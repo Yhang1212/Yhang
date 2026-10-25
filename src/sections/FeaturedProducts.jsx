@@ -9,13 +9,13 @@ const refrigerators = [
   { id: 4, name: 'Arctic Mini Side-by-Side', price: '$1,449', image: 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=85', category: 'COMPACT LIVING', capacity: '16.3 cu. ft.', finish: 'White gloss' },
 ];
 
-function FeaturedProducts() {
+function FeaturedProducts({ onNavigate }) {
   return (
     <section id="products" className="featured-section">
       <Container>
         <div className="featured-heading">
           <div><p className="eyebrow">The collection</p><h2>Made to fit your<br />kind of living.</h2></div>
-          <a href="#contact" className="collection-link">Find your perfect fit <ArrowUpRight size={16} /></a>
+          <button type="button" className="collection-link" onClick={() => onNavigate?.('products')}>View the full collection <ArrowUpRight size={16} /></button>
         </div>
         <div className="featured-grid">
           {refrigerators.map((item, index) => (
@@ -37,4 +37,5 @@ function FeaturedProducts() {
 }
 
 export default FeaturedProducts;
+
 

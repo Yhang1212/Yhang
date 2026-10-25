@@ -13,16 +13,18 @@ const Home = ({ onNavigate }) => {
     <>
       <Navbar onNavigate={onNavigate} />
       <Hero />
-      <FeaturedProducts />
+      <FeaturedProducts onNavigate={onNavigate} />
       <WhyChooseUs />
       <Technology />
       <Statistics />
       <Testimonials />
       <CTA />
-      <Footer />
+      <Footer onNavigate={onNavigate} />
     </>
   );
 };
 
 export default Home;
+
+
 

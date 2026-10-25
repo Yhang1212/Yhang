@@ -90,7 +90,7 @@
 
 .chip.active,
 .chip:hover {
-  background: linear-gradient(135deg, var(--green), #799a80);
+  background: var(--green);
   color: #fff;
   border-color: transparent;
 }
@@ -193,7 +193,11 @@
   width: 100%;
   padding: 0.8rem 1rem;
   border-radius: 0.9rem;
-  background: linear-gradient(135deg, var(--ink), var(--green));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--green);
   color: #fff;
   font-weight: 700;
 }
@@ -222,7 +226,7 @@
 }
 
 .pagination .page-active {
-  background: linear-gradient(135deg, var(--green), #799a80);
+  background: var(--green);
   color: #fff;
   border-color: transparent;
 }
@@ -238,4 +242,12 @@
   }
 }
 
+
+
+
+
+.empty-results { padding: 58px 20px; border: 1px solid var(--line); background: #fff; text-align: center; }
+.empty-results h2 { margin-bottom: 10px; font-size: 24px; }
+.empty-results p { margin-bottom: 20px; font-size: 13px; }
+.empty-results button { padding: 11px 16px; background: var(--green); color: white; font-size: 12px; font-weight: 700; }
 

@@ -1,52 +1,31 @@
 import Container from '../components/common/Container';
 import './Testimonials.css';
 
-const testimonials = [
-  {
-    quote:
-      'The design feels luxurious, and the cooling performance is better than anything we had before.',
-    name: 'Mina Chen',
-    role: 'Interior Designer',
-  },
-  {
-    quote:
-      'Silent, elegant, and incredibly reliable. It completely elevated our kitchen experience.',
-    name: 'Daniel Brooks',
-    role: 'Homeowner',
-  },
-  {
-    quote:
-      'From setup to daily use, the quality and attention to detail are outstanding.',
-    name: 'Ava Morales',
-    role: 'Product Consultant',
-  },
+const benefits = [
+  { number: '01', title: 'Quiet by design', detail: 'Thoughtful airflow and low-noise operation help keep the kitchen calm.' },
+  { number: '02', title: 'Freshness, made simple', detail: 'Smart temperature control keeps everyday ingredients ready for what’s next.' },
+  { number: '03', title: 'A natural fit at home', detail: 'Refined finishes and considered proportions bring ease to modern spaces.' },
 ];
 
-const Testimonials = () => {
-  return (
-    <section id="testimonials" className="testimonials-section">
-      <Container>
-        <div className="section-heading">
-          <p className="eyebrow">Testimonials</p>
-          <h2>Trusted by clients who value quality.</h2>
-          <p>
-            Every product is designed to bring lasting comfort and intelligent performance into modern homes.
-          </p>
-        </div>
-
-        <div className="testimonial-grid">
-          {testimonials.map((item) => (
-            <article key={item.name} className="testimonial-card">
-              <p>“{item.quote}”</p>
-              <strong>{item.name}</strong>
-              <span>{item.role}</span>
-            </article>
-          ))}
-        </div>
-      </Container>
-    </section>
-  );
-};
+const Testimonials = () => (
+  <section id="testimonials" className="testimonials-section">
+    <Container>
+      <div className="section-heading">
+        <p className="eyebrow">The HAILANG difference</p>
+        <h2>Little details. Better everyday living.</h2>
+        <p>Designed around the routines, spaces, and moments that make a house feel like home.</p>
+      </div>
+      <div className="testimonial-grid">
+        {benefits.map((item) => (
+          <article key={item.number} className="testimonial-card">
+            <span className="benefit-number">{item.number}</span>
+            <h3>{item.title}</h3>
+            <p>{item.detail}</p>
+          </article>
+        ))}
+      </div>
+    </Container>
+  </section>
+);
 
 export default Testimonials;
-

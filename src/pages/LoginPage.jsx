@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
+import BrandLogo from '../components/common/BrandLogo';
+import fridge from '../assets/images/fridge.svg';
+import '../components/common/BrandLogo.css';
+import './LoginPage.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -6,12 +11,7 @@ function LoginPage({ onNavigate }) {
   const [mode, setMode] = useState('signin');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    resetEmail: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,130 +22,84 @@ function LoginPage({ onNavigate }) {
     event.preventDefault();
     setIsLoading(true);
     setMessage('');
+    const endpoint = mode === 'signup' ? '/auth/register' : mode === 'forgot' ? '/auth/forgot-password' : '/auth/login';
+    const payload = mode === 'signup'
+      ? { name: formData.name, email: formData.email, password: formData.password }
+      : mode === 'forgot' ? { email: formData.email } : { email: formData.email, password: formData.password };
 
     try {
-      const endpoint = mode === 'signup' ? '/auth/register' : '/auth/login';
-      const payload = mode === 'signup'
-        ? { name: formData.name, email: formData.email, password: formData.password }
-        : { email: formData.email, password: formData.password };
-
       const response = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-
       const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Request failed');
+      if (!response.ok) throw new Error(data.message || 'Please try again.');
+      if (mode === 'forgot') {
+        setMessage('If the account exists, reset instructions will be sent.');
+        return;
       }
-
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('refreshToken', data.refreshToken);
-      setMessage(mode === 'signup' ? 'Account created successfully.' : 'Signed in successfully.');
       onNavigate('home');
     } catch (error) {
-      setMessage(error.message || 'Something went wrong');
+      setMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleForgotPassword = async () => {
-    if (!formData.resetEmail) {
-      setMessage('Enter your email to reset the password.');
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.resetEmail }),
-      });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || 'Request failed');
-      setMessage('Password reset link has been sent.');
-    } catch (error) {
-      setMessage(error.message || 'Password reset failed');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const title = mode === 'signup' ? 'Create your account' : mode === 'forgot' ? 'Reset your password' : 'Welcome back';
 
   return (
-    <div style={{ minHeight: '100vh', background: '#f4f7fb', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
-      <div style={{ width: '100%', maxWidth: '460px', background: '#fff', borderRadius: '24px', padding: '32px', boxShadow: '0 20px 45px rgba(0,0,0,0.08)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <div>
-            <p style={{ margin: 0, color: '#1f4ed8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '12px' }}>Welcome</p>
-            <h2 style={{ margin: '6px 0 0', fontSize: '28px' }}>{mode === 'signup' ? 'Create account' : 'Sign in'}</h2>
+    <main className="auth-page">
+      <a className="auth-brand" href="#home" onClick={() => onNavigate('home')}><BrandLogo /></a>
+      <section className="auth-shell">
+        <div className="auth-promo">
+          <span className="auth-kicker">HAILANG · MADE FOR HOME</span>
+          <div className="auth-product"><img src={fridge} alt="" /></div>
+          <div className="auth-promo-copy">
+            <p>Comfort, considered.</p>
+            <h1>Good living<br />starts at home.</h1>
+            <span>Discover intelligent cooling, shaped around the way you live.</span>
           </div>
-          <button onClick={() => onNavigate('home')} style={{ border: 'none', background: 'transparent', color: '#1f4ed8', cursor: 'pointer', fontWeight: 600 }}>
-            Continue as guest
-          </button>
+          <span className="auth-promo-index">01 — 03</span>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '18px' }}>
-          <button onClick={() => setMode('signin')} style={{ flex: 1, padding: '10px', borderRadius: '999px', border: mode === 'signin' ? 'none' : '1px solid #dbe3f0', background: mode === 'signin' ? '#1f4ed8' : '#f8fafc', color: mode === 'signin' ? '#fff' : '#0f172a', fontWeight: 700, cursor: 'pointer' }}>
-            Sign in with Email
-          </button>
-          <button onClick={() => setMode('signup')} style={{ flex: 1, padding: '10px', borderRadius: '999px', border: mode === 'signup' ? 'none' : '1px solid #dbe3f0', background: mode === 'signup' ? '#1f4ed8' : '#f8fafc', color: mode === 'signup' ? '#fff' : '#0f172a', fontWeight: 700, cursor: 'pointer' }}>
-            Sign up with Email
-          </button>
-        </div>
+        <div className="auth-panel">
+          <div className="auth-heading">
+            <p className="eyebrow">Your Hailang account</p>
+            <h2>{title}</h2>
+            <p>{mode === 'forgot' ? 'Enter the email address linked to your account.' : 'Sign in to keep your home experience close at hand.'}</p>
+          </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '12px' }}>
-          {mode === 'signup' && (
-            <input
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Full name"
-              style={{ padding: '12px 14px', borderRadius: '12px', border: '1px solid #dbe3f0' }}
-            />
+          {mode !== 'forgot' ? (
+            <div className="auth-tabs" role="tablist" aria-label="Account access">
+              <button type="button" role="tab" aria-selected={mode === 'signin'} className={mode === 'signin' ? 'active' : ''} onClick={() => { setMode('signin'); setMessage(''); }}>Sign in</button>
+              <button type="button" role="tab" aria-selected={mode === 'signup'} className={mode === 'signup' ? 'active' : ''} onClick={() => { setMode('signup'); setMessage(''); }}>Create account</button>
+            </div>
+          ) : (
+            <button className="auth-back" type="button" onClick={() => { setMode('signin'); setMessage(''); }}><ArrowLeft size={15} /> Back to sign in</button>
           )}
 
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email address"
-            style={{ padding: '12px 14px', borderRadius: '12px', border: '1px solid #dbe3f0' }}
-          />
+          <form className="auth-form" onSubmit={handleSubmit}>
+            {mode === 'signup' && (
+              <label>Full name<input name="name" autoComplete="name" value={formData.name} onChange={handleChange} placeholder="Your name" required /></label>
+            )}
+            <label>Email address<input name="email" type="email" autoComplete="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required /></label>
+            {mode !== 'forgot' && (
+              <label>Password<input name="password" type="password" autoComplete={mode === 'signup' ? 'new-password' : 'current-password'} value={formData.password} onChange={handleChange} placeholder="Enter your password" minLength={8} required /></label>
+            )}
+            {mode === 'signin' && <button type="button" className="auth-forgot" onClick={() => { setMode('forgot'); setMessage(''); }}>Forgot password?</button>}
+            <button className="auth-submit" type="submit" disabled={isLoading}>{isLoading ? 'Please wait…' : mode === 'forgot' ? 'Send reset instructions' : mode === 'signup' ? 'Create account' : 'Sign in'} <ArrowRight size={16} /></button>
+          </form>
 
-          <input
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            style={{ padding: '12px 14px', borderRadius: '12px', border: '1px solid #dbe3f0' }}
-          />
-
-          <button type="submit" disabled={isLoading} style={{ padding: '12px 14px', borderRadius: '12px', border: 'none', background: '#1f4ed8', color: '#fff', fontWeight: 700, cursor: isLoading ? 'wait' : 'pointer' }}>
-            {isLoading ? 'Working...' : mode === 'signup' ? 'Create account' : 'Sign in'}
-          </button>
-        </form>
-
-        <div style={{ marginTop: '16px', display: 'grid', gap: '10px' }}>
-          {message && <div style={{ padding: '10px 12px', borderRadius: '10px', background: '#eff6ff', color: '#1d4ed8', fontSize: '14px' }}>{message}</div>}
-          <input
-            name="resetEmail"
-            type="email"
-            value={formData.resetEmail}
-            onChange={handleChange}
-            placeholder="Email for password reset"
-            style={{ padding: '12px 14px', borderRadius: '12px', border: '1px solid #dbe3f0' }}
-          />
-          <button onClick={handleForgotPassword} style={{ padding: '10px 12px', borderRadius: '12px', border: '1px solid #dbe3f0', background: '#fff', cursor: 'pointer', fontWeight: 600 }}>
-            Send reset email
-          </button>
+          {message && <p className="auth-message" role="status"><CheckCircle2 size={16} />{message}</p>}
+          <p className="auth-terms">By continuing, you agree to our terms and privacy policy.</p>
+          <button className="auth-guest" type="button" onClick={() => onNavigate('home')}>Continue browsing as a guest</button>
         </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }
 

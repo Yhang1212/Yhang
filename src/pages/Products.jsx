@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react';
 import Container from '../components/common/Container';
+import Navbar from '../components/layout/Navbar';
+import Footer from '../components/layout/Footer';
+import { ArrowUpRight } from 'lucide-react';
 import './Products.css';
 
 const products = [
@@ -88,7 +91,7 @@ const products = [
 const categories = ['All', 'Cooling', 'Smart', 'Built-in', 'Compact'];
 const pageSize = 4;
 
-function Products() {
+function Products({ onNavigate }) {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('featured');
@@ -130,7 +133,9 @@ function Products() {
   };
 
   return (
-    <section className="products-page">
+    <>
+      <Navbar onNavigate={onNavigate} currentPage="products" />
+      <section id="products" className="products-page">
       <Container>
         <div className="products-shell">
           <div className="products-header">
@@ -183,6 +188,9 @@ function Products() {
             ))}
           </div>
 
+          {pagedProducts.length === 0 ? (
+            <div className="empty-results"><h2>No products found</h2><p>Try another search or clear your filters to see the full collection.</p><button type="button" onClick={() => { setSearch(''); setActiveCategory('All'); setPage(1); }}>Clear filters</button></div>
+          ) : (
           <div className="products-grid">
             {pagedProducts.map((product) => (
               <article key={product.id} className="product-card">
@@ -206,13 +214,12 @@ function Products() {
                     ))}
                   </div>
 
-                  <button type="button" className="product-action">
-                    Preview Product
-                  </button>
+                  <a href="#contact" className="product-action">Ask about this model <ArrowUpRight size={15} /></a>
                 </div>
               </article>
             ))}
           </div>
+          )}
 
           <div className="pagination">
             <button type="button" onClick={() => changePage(safePage - 1)} disabled={safePage === 1}>
@@ -237,7 +244,13 @@ function Products() {
         </div>
       </Container>
     </section>
+      <Footer onNavigate={onNavigate} currentPage="products" />
+    </>
   );
 }
 
 export default Products;
+
+
+
+
