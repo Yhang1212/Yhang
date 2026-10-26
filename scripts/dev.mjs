@@ -1,11 +1,54 @@
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createConnection } from 'node:net';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const backend = resolve(root, 'Backend');
 const children = [];
+
+function portIsOpen(port) {
+  return new Promise((resolveCheck) => {
+    const socket = createConnection({ host: '127.0.0.1', port });
+    socket.setTimeout(500);
+    socket.once('connect', () => { socket.destroy(); resolveCheck(true); });
+    socket.once('error', () => resolveCheck(false));
+    socket.once('timeout', () => { socket.destroy(); resolveCheck(false); });
+  });
+}
+
+async function waitForPort(port, timeoutMs = 20000) {
+  const deadline = Date.now() + timeoutMs;
+  while (Date.now() < deadline) {
+    if (await portIsOpen(port)) return true;
+    await new Promise((resolveWait) => setTimeout(resolveWait, 500));
+  }
+  return false;
+}
+
+async function ensureLocalDatabase() {
+  if (process.platform !== 'win32' || !process.env.LOCALAPPDATA) return;
+
+  const pgCtl = process.env.HAILANG_PG_CTL || 'C:\\Program Files\\PostgreSQL\\17\\bin\\pg_ctl.exe';
+  const dataDir = join(process.env.LOCALAPPDATA, 'HAILANG', 'PostgreSQL', 'data');
+  const port = 5433;
+  if (!existsSync(pgCtl) || !existsSync(dataDir)) return;
+  if (await portIsOpen(port)) return;
+
+  const status = spawnSync(pgCtl, ['-D', dataDir, 'status'], { stdio: 'ignore' });
+  if (status.status !== 0) {
+    const logPath = join(process.env.LOCALAPPDATA, 'HAILANG', 'PostgreSQL', 'postgres.log');
+    const started = spawnSync(pgCtl, ['-D', dataDir, '-l', logPath, '-o', `-p ${port} -h 127.0.0.1`, 'start'], { stdio: 'inherit' });
+    if (started.status !== 0) {
+      console.error('Could not start the local PostgreSQL database. Check the PostgreSQL log at:', logPath);
+      return;
+    }
+  }
+
+  if (await waitForPort(port)) console.log(`Local PostgreSQL is ready on port ${port}.`);
+  else console.error(`PostgreSQL did not become ready on port ${port}; backend database requests may fail.`);
+}
 
 async function backendIsHealthy() {
   try {
@@ -27,6 +70,7 @@ function start(label, args, cwd) {
   });
 }
 
+await ensureLocalDatabase();
 start('Frontend', [resolve(root, 'node_modules/vite/bin/vite.js')], root);
 
 if (await backendIsHealthy()) {
