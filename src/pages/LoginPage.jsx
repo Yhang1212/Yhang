@@ -122,18 +122,18 @@ function LoginPage({ onNavigate }) {
   };
 
   return (
-    <main className="auth-page">
-      <section className="auth-shell" aria-labelledby="auth-title">
+    <main className="auth-page auth-page--login">
+      <section className="auth-shell auth-shell--login" aria-labelledby="auth-title">
         <div className="auth-promo">
           <div className="auth-brand-row">
             <a className="auth-brand-lockup" href="#home" onClick={(event) => { event.preventDefault(); onNavigate('home'); }} aria-label="HAILANG home">
               <span className="auth-brand-mark" aria-hidden="true"><i /></span><span>HAILANG</span>
             </a>
-            <span className="auth-tagline">Better Cooling <b>�</b> Better Living</span>
+            <span className="auth-tagline">Better Cooling <b>&middot;</b> Better Living</span>
           </div>
           <div className="auth-promo-copy">
-            <h1>Freshness<br />For Lifestyle</h1>
-            <p>Premium refrigerators for<br />a healthier and better life.</p>
+            <h1>A cooler home.<br />A better everyday.</h1>
+            <p>Thoughtful refrigeration, designed around the way you live.</p>
           </div>
           <div className="auth-visual"><img src={refrigerator} alt="HAILANG refrigerator" /></div>
           <div className="auth-features">
@@ -143,7 +143,7 @@ function LoginPage({ onNavigate }) {
           </div>
         </div>
         <div className="auth-panel">
-          <div className="auth-panel-top">Better Cooling <b>&middot;</b> Better Living</div>
+          <div className="auth-panel-top">Secure member sign-in</div>
           <div className="auth-heading">
             <p className="eyebrow">HAILANG account</p>
             <h2 id="auth-title">{showPhone ? 'Sign in with phone' : 'Welcome Back'}</h2>
@@ -194,4 +194,3 @@ function LoginPage({ onNavigate }) {
   );
 }
 export default LoginPage;
-
