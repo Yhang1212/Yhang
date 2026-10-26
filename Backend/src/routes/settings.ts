@@ -6,13 +6,7 @@ const router = Router();
 
 router.get('/', async (_req, res) => {
   const settings = await prisma.companySetting.findFirst();
-
-  if (!settings) {
-    const created = await prisma.companySetting.create({ data: {} });
-    return res.json(created);
-  }
-
-  res.json(settings);
+  res.json(settings || {});
 });
 
 router.put('/', authenticateToken, requireAdmin, async (req, res) => {

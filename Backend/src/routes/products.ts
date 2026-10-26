@@ -4,18 +4,25 @@ import { prisma } from '../config/prisma.js';
 
 const router = Router();
 
-router.get('/', authenticateToken, requireAdmin, async (_req, res) => {
+router.get('/', async (req, res) => {
+  const category = typeof req.query.category === 'string' ? req.query.category : undefined;
+  const search = typeof req.query.search === 'string' ? req.query.search.trim() : undefined;
   const products = await prisma.product.findMany({
+    where: {
+      ...(category ? { category: { slug: category } } : {}),
+      ...(search ? { OR: [{ name: { contains: search, mode: 'insensitive' } }, { description: { contains: search, mode: 'insensitive' } }] } : {}),
+    },
     include: { category: true },
-    orderBy: { createdAt: 'desc' },
+    orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
   });
 
   res.json(products);
 });
 
-router.get('/:id', authenticateToken, requireAdmin, async (req, res) => {
-  const product = await prisma.product.findUnique({
-    where: { id: Number(req.params.id) },
+router.get('/:idOrSlug', async (req, res) => {
+  const id = Number(req.params.idOrSlug);
+  const product = await prisma.product.findFirst({
+    where: Number.isInteger(id) && id > 0 ? { id } : { slug: req.params.idOrSlug },
     include: { category: true },
   });
 

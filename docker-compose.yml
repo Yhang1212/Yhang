@@ -1,0 +1,20 @@
+services:
+  database:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hailang
+      POSTGRES_USER: hailang
+      POSTGRES_PASSWORD: hailang_local_only
+    ports:
+      - "5434:5432"
+    volumes:
+      - hailang-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hailang -d hailang"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  hailang-postgres:

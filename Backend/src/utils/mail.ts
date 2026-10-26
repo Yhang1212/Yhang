@@ -1,9 +1,4 @@
-export const sendVerificationEmail = async (email: string, token: string) => {
-  console.log(`[mail] Verification email for ${email}: /verify-email?token=${token}`);
-  return true;
-};
-
-export const sendPasswordResetEmail = async (email: string, token: string) => {
-  console.log(`[mail] Password reset for ${email}: /reset-password?token=${token}`);
-  return true;
-};
+﻿// Email delivery is intentionally disabled until SMTP or a transactional mail provider is configured.
+// Never log verification or password reset tokens to application output.
+export const sendVerificationEmail = async (_email: string, _token: string) => false;
+export const sendPasswordResetEmail = async (_email: string, _token: string) => false;

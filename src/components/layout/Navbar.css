@@ -26,3 +26,106 @@
   .menu-toggle { display: inline-flex; }
 }
 @media (max-width: 420px) { .login-link { display: none; } }
+
+.nav-container{position:relative}
+.nav-products-trigger{display:inline-flex;align-items:center;gap:5px;padding:10px 0;background:transparent;color:#59625d;font-size:13px;font-weight:600}
+.nav-products-trigger:hover,.nav-products-trigger[aria-expanded=true]{color:#1b61ac}
+.nav-products-trigger svg{transition:transform .2s ease}
+.nav-products-trigger[aria-expanded=true] svg{transform:rotate(180deg)}
+.mega-menu{display:none;position:absolute;top:100%;left:50%;width:100vw;padding:25px 24px 30px;transform:translateX(-50%);background:#fff;border-top:1px solid #edf1f4;box-shadow:0 20px 38px #162b3e20}
+.mega-menu.is-open{display:block}
+.mega-menu-inner{width:min(1320px,100%);margin:auto;display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:24px}
+.mega-catalog{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px}
+.mega-product-card{min-width:0;color:#182530;text-align:center;text-decoration:none;transition:transform .2s ease}
+.mega-product-card:hover,.mega-product-card:focus-visible{transform:translateY(-3px)}
+.mega-product-badge{display:block;height:16px;color:#1b61ac;font-size:9px;font-weight:800;letter-spacing:.1em;text-align:left}
+.mega-product-image{position:relative;display:grid;height:88px;place-items:center;overflow:hidden;background:#f5f7f9}
+.mega-product-image img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.mega-product-image svg{position:absolute;right:5px;bottom:5px;padding:4px;border-radius:50%;background:white;color:#1b61ac;opacity:0}
+.mega-product-card:hover .mega-product-image svg,.mega-product-card:focus-visible .mega-product-image svg{opacity:1}
+.mega-product-title{display:block;margin-top:8px;font-size:11px;font-weight:600;line-height:1.35}
+.mega-discover{padding:8px 0 0 22px;border-left:1px solid #e4e9ed}
+.mega-discover p{margin:0 0 14px;color:#8a949c;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.mega-discover ul{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.mega-discover a{color:#344554;font-size:12px;font-weight:600;text-decoration:none}
+.mega-discover a:hover{text-decoration:underline;text-underline-offset:4px;color:#1b61ac}
+@media(max-width:1050px){.mega-menu-inner{grid-template-columns:minmax(0,1fr) 160px}.mega-catalog{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:760px){
+ .nav-container{height:68px;width:calc(100% - 32px)}
+ .desktop-menu{display:none;position:absolute;top:68px;left:-16px;right:-16px;max-height:calc(100vh - 68px);overflow:auto;padding:14px 24px 22px;flex-direction:column;align-items:stretch;gap:0;background:#f8f8f5;border-bottom:1px solid #dce3e9;box-shadow:0 14px 24px #17201d0c}
+ .desktop-menu.is-open{display:flex}
+ .desktop-menu>a,.nav-products-trigger{width:100%;justify-content:space-between;padding:13px 0;border-bottom:1px solid #e1e6e9;text-align:left}
+ .mega-menu,.mega-menu.is-open{position:static;width:100%;padding:0;transform:none;border:0;box-shadow:none;background:transparent}
+ .mega-menu:not(.is-open){display:none}
+ .mega-menu-inner{display:block;padding:12px 0 16px}
+ .mega-catalog{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .mega-product-image{height:68px}
+ .mega-product-title{font-size:10px}
+ .mega-product-image svg{display:none}
+ .mega-discover{margin-top:14px;padding:12px 0 0;border-top:1px solid #e4e9ed;border-left:0}
+ .mega-discover ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .nav-actions{gap:14px}.contact-btn{padding:10px 12px;font-size:11px}.menu-toggle{display:inline-flex}
+}
+@media(max-width:420px){.login-link{display:none}.mega-catalog{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.mega-menu,.mega-product-card,.nav-products-trigger svg{transition:none}}
+
+.navbar--home {
+  height: 86px;
+  margin-bottom: -86px;
+  border-bottom-color: #ffffff4a;
+  background: #ffffffa8;
+}
+.navbar--home .nav-container { width: min(1328px, calc(100% - 64px)); height: 86px; }
+.navbar--home .brand-logo__mark { width: 48px; height: 48px; }
+.navbar--home .brand-logo__name { color: #0d2a55; font-size: 22px; letter-spacing: .09em; }
+.navbar--home .desktop-menu { gap: clamp(22px, 3vw, 44px); }
+.navbar--home .desktop-menu > a:first-child { position: relative; color: #0866e9; }
+.navbar--home .desktop-menu > a:first-child::after {
+  position: absolute;
+  right: 0;
+  bottom: -12px;
+  left: 0;
+  height: 2px;
+  background: #0866e9;
+  content: '';
+}
+.navbar--home .desktop-menu a,
+.navbar--home .login-link,
+.navbar--home .nav-products-trigger { color: #29486f; }
+.navbar--home .desktop-menu a:hover,
+.navbar--home .login-link:hover,
+.navbar--home .nav-products-trigger:hover,
+.navbar--home .nav-products-trigger[aria-expanded=true] { color: #0866e9; }
+.navbar--home .contact-btn { min-width: 158px; justify-content: center; padding: 14px 20px; border-radius: 28px; background: #0866e9; }
+.navbar--home .contact-btn:hover { background: #0755c3; }
+@media (max-width: 900px) {
+  .navbar--home .desktop-menu {
+    display: none;
+    position: absolute;
+    top: 86px;
+    right: -24px;
+    left: -24px;
+    padding: 14px 24px 22px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: #f8fbff;
+    border-bottom: 1px solid #dce3e9;
+    box-shadow: 0 14px 24px #17201d0c;
+  }
+  .navbar--home .desktop-menu.is-open { display: flex; }
+  .navbar--home .desktop-menu > a,
+  .navbar--home .nav-products-trigger { width: 100%; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid #e1e6e9; text-align: left; }
+  .navbar--home .desktop-menu > a:first-child::after { display: none; }
+  .navbar--home .menu-toggle { display: inline-flex; }
+  .navbar--home .login-link { display: none; }
+}
+@media (max-width: 760px) {
+  .navbar--home { height: 68px; margin-bottom: -68px; }
+  .navbar--home .nav-container { width: calc(100% - 32px); height: 68px; }
+  .navbar--home .brand-logo__mark { width: 39px; height: 39px; }
+  .navbar--home .brand-logo__name { font-size: 17px; }
+  .navbar--home .desktop-menu { gap: 0; background: #f8fbff; }
+  .navbar--home .desktop-menu > a:first-child::after { display: none; }
+  .navbar--home .contact-btn { min-width: 0; padding: 10px 13px; }
+}

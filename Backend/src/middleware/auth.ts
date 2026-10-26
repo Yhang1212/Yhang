@@ -5,7 +5,7 @@ import { prisma } from '../config/prisma.js';
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret';
 
 export interface AuthRequest extends Request {
-  user?: { id: number; email: string; role: string };
+  user?: { id: number; email?: string; role: string };
 }
 
 export function authenticateToken(req: AuthRequest, res: Response, next: NextFunction) {
@@ -17,7 +17,7 @@ export function authenticateToken(req: AuthRequest, res: Response, next: NextFun
   }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as { id: number; email: string; role: string };
+    const payload = jwt.verify(token, JWT_SECRET) as { id: number; email?: string; role: string };
     req.user = payload;
     next();
   } catch {

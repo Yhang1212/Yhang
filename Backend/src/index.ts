@@ -16,8 +16,8 @@ import dashboardRouter from './routes/dashboard.js';
 import { getUsers } from './services/userService.js';
 import { authenticateToken, requireAdmin } from './middleware/auth.js';
 
-if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || !process.env.REFRESH_SECRET)) {
-  throw new Error('JWT_SECRET and REFRESH_SECRET must be set in production');
+if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || !process.env.REFRESH_SECRET || !process.env.CORS_ORIGIN)) {
+  throw new Error('JWT_SECRET, REFRESH_SECRET, and CORS_ORIGIN must be set in production');
 }
 
 const app = express();
@@ -31,7 +31,14 @@ const limiter = rateLimit({
 });
 
 app.use(helmet());
-app.use(cors({ origin: true, credentials: true }));
+const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map((origin) => origin.trim()).filter(Boolean);
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || process.env.NODE_ENV !== 'production' || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Origin is not allowed by CORS'));
+  },
+  credentials: true,
+}));
 app.use(morgan('dev'));
 app.use(limiter);
 app.use(express.json({ limit: '10mb' }));

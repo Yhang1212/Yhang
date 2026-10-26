@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0.8" y2="1">
+      <stop stop-color="#063d78"/>
+      <stop offset=".48" stop-color="#0879c2"/>
+      <stop offset="1" stop-color="#6bc9ef"/>
+    </linearGradient>
+    <linearGradient id="far" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#e9f8ff"/>
+      <stop offset=".48" stop-color="#8ec5e8"/>
+      <stop offset="1" stop-color="#498bb9"/>
+    </linearGradient>
+    <linearGradient id="near" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#d9f2ff"/>
+      <stop offset=".5" stop-color="#78b9e3"/>
+      <stop offset="1" stop-color="#347cae"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#75d0f3"/>
+      <stop offset=".32" stop-color="#258fc9"/>
+      <stop offset="1" stop-color="#07518e"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="15%" r="65%">
+      <stop stop-color="#b8eaff" stop-opacity=".64"/>
+      <stop offset="1" stop-color="#b8eaff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1000" height="900" fill="url(#sky)"/>
+  <rect width="1000" height="650" fill="url(#glow)"/>
+  <path d="M0 570 105 414 172 490 298 253 394 430 510 302 610 445 724 274 843 466 922 350 1000 452V660H0Z" fill="url(#far)"/>
+  <path d="m105 414 35 53 33-26 25 45-62-25-34 22-42-9Zm193-161 51 95 45 82-75-61-29 29-30-34-57 54 39-86Zm212 49 44 75 53 68-80-40-25 32-42-46-53 34 52-80Zm214-28 54 93 65 99-91-70-34 24-35-50-49 32 59-93Zm198 76 39 67 39 35-63-15-35 24-31-38-47 25Z" fill="#f3fbff" fill-opacity=".92"/>
+  <path d="M0 620 105 484 187 553 315 364 404 521 528 398 630 545 755 381 870 558 945 468 1000 520V694H0Z" fill="url(#near)" fill-opacity=".95"/>
+  <path d="m105 484 42 61 40 8-42-3-35 28-38-27Zm210-120 53 91 36 66-77-58-45 39-37-36 44-55Zm213 34 46 66 56 80-77-47-43 34-48-51-49 31 57-76Zm227-17 51 83 64 94-83-64-42 37-42-42-42 33 55-82Zm190 87 36 57 42 32-56-10-40 26-31-34-41 23Z" fill="#f6fcff" fill-opacity=".9"/>
+  <path d="M0 645c164-18 274 18 432 1 183-20 375-10 568 7v247H0Z" fill="url(#water)"/>
+  <path d="M120 667h180m80 14h250m94-9h126M48 702h248m375 3h170M160 743h144m220-7h282M45 789h237m300 3h178M143 842h332m110-8h200" stroke="#bdeeff" stroke-opacity=".28" stroke-width="3" stroke-linecap="round"/>
+  <path d="M0 645c164-18 274 18 432 1 183-20 375-10 568 7" fill="none" stroke="#d7f7ff" stroke-opacity=".56" stroke-width="4"/>
+</svg>

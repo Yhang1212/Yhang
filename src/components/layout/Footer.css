@@ -1,11 +1,9 @@
-.site-footer { padding: 56px 0 24px; background: linear-gradient(135deg, #123b63 0%, #1b61ac 100%); color: #d5e2ee; }
-.footer-main { display: grid; grid-template-columns: 1.5fr .7fr .9fr; gap: 48px; padding-bottom: 40px; }
-.footer-brand { max-width: 320px; }
-.footer-brand > a { display: inline-block; margin-bottom: 17px; }
-.footer-brand p { margin: 0; color: #c1d1e0; font-size: 13px; line-height: 1.7; }
-.footer-links, .footer-contact { display: flex; flex-direction: column; align-items: flex-start; gap: 11px; }
-.footer-links strong, .footer-contact strong { margin-bottom: 4px; color: white; font-size: 12px; }
-.footer-links a, .footer-contact a { color: #d5e2ee; font-size: 12px; transition: color .2s; }
-.footer-links a:hover, .footer-contact a:hover { color: white; }
-.footer-bottom { display: flex; justify-content: space-between; gap: 20px; padding-top: 19px; border-top: 1px solid #ffffff2e; color: #bfd0df; font-size: 10px; }
-@media(max-width:640px) { .site-footer { padding-top: 42px; } .footer-main { grid-template-columns: 1fr 1fr; gap: 30px 20px; padding-bottom: 30px; } .footer-brand { grid-column: 1 / -1; } .footer-bottom { flex-direction: column; gap: 6px; } }
+.site-footer{padding:54px 0 23px;background:#113a60;color:#d7e5f1}
+.footer-main{display:grid;grid-template-columns:1.5fr .7fr .9fr;gap:48px;padding-bottom:38px}
+.footer-brand{max-width:330px}.footer-brand>a{display:inline-block;margin-bottom:17px}.footer-brand p{margin:0;color:#c6d8e7;font-size:13px;line-height:1.7}
+.footer-links,.footer-contact{display:flex;flex-direction:column;align-items:flex-start;gap:11px}
+.footer-links strong,.footer-contact strong{margin-bottom:4px;color:#fff;font-size:12px}
+.footer-links a,.footer-contact a,.footer-contact span{color:#d7e5f1;font-size:12px;transition:color .2s}
+.footer-contact span{max-width:240px;color:#abc2d5;line-height:1.6}.footer-links a:hover,.footer-contact a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;gap:20px;padding-top:18px;border-top:1px solid #ffffff2e;color:#bfd0df;font-size:10px}
+@media(max-width:640px){.site-footer{padding-top:42px}.footer-main{grid-template-columns:1fr 1fr;gap:28px 20px;padding-bottom:28px}.footer-brand{grid-column:1/-1}.footer-bottom{flex-direction:column;gap:6px}}

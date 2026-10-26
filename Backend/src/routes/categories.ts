@@ -4,17 +4,19 @@ import { prisma } from '../config/prisma.js';
 
 const router = Router();
 
-router.get('/', authenticateToken, requireAdmin, async (_req, res) => {
+router.get('/', async (_req, res) => {
   const categories = await prisma.category.findMany({
-    orderBy: { createdAt: 'desc' },
+    include: { _count: { select: { products: true } } },
+    orderBy: { name: 'asc' },
   });
 
   res.json(categories);
 });
 
-router.get('/:id', authenticateToken, requireAdmin, async (req, res) => {
-  const category = await prisma.category.findUnique({
-    where: { id: Number(req.params.id) },
+router.get('/:idOrSlug', async (req, res) => {
+  const id = Number(req.params.idOrSlug);
+  const category = await prisma.category.findFirst({
+    where: Number.isInteger(id) && id > 0 ? { id } : { slug: req.params.idOrSlug },
   });
 
   if (!category) {

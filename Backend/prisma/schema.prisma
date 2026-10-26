@@ -8,52 +8,54 @@ datasource db {
 }
 
 model User {
-  id                     Int       @id @default(autoincrement())
-  email                  String    @unique
-  name                   String?
-  passwordHash           String    @default("")
-  role                   String    @default("USER")
-  provider               String    @default("EMAIL")
-  providerId             String?
-  isEmailVerified       Boolean   @default(false)
-  emailVerificationToken String?
+  id                       Int       @id @default(autoincrement())
+  email                    String?   @unique
+  name                     String?
+  passwordHash             String    @default("")
+  role                     String    @default("USER")
+  provider                 String    @default("EMAIL")
+  providerId               String?
+  isEmailVerified          Boolean   @default(false)
+  emailVerificationToken   String?
   emailVerificationExpires DateTime?
-  passwordResetToken     String?
-  passwordResetExpires   DateTime?
-  phone                  String?
-  createdAt              DateTime  @default(now())
-  updatedAt              DateTime  @updatedAt
+  passwordResetToken       String?
+  passwordResetExpires     DateTime?
+  phone                    String?   @unique
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  @@unique([provider, providerId])
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
-  slug        String   @unique
+  slug        String    @unique
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   products    Product[]
 }
 
 model Product {
-  id             Int      @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   name           String
-  slug           String   @unique
+  slug           String    @unique
   description    String?
   price          Float
-  stock          Int      @default(0)
+  stock          Int       @default(0)
   imageUrl       String?
-  images         String[] @default([])
-  specifications String[] @default([])
-  features       String[] @default([])
+  images         String[]  @default([])
+  specifications String[]  @default([])
+  features       String[]  @default([])
   capacity       String?
   energyRating   String?
   warranty       String?
-  isFeatured     Boolean  @default(false)
+  isFeatured     Boolean   @default(false)
   categoryId     Int?
   category       Category? @relation(fields: [categoryId], references: [id])
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }
 
 model ContactMessage {
@@ -69,19 +71,19 @@ model ContactMessage {
 }
 
 model CompanySetting {
-  id               Int      @id @default(autoincrement())
-  companyName      String?
-  logoUrl          String?
-  phone            String?
-  email            String?
-  address          String?
-  facebookUrl      String?
-  instagramUrl     String?
-  linkedinUrl      String?
-  youtubeUrl       String?
-  homepageBannerTitle String?
+  id                     Int      @id @default(autoincrement())
+  companyName            String?
+  logoUrl                String?
+  phone                  String?
+  email                  String?
+  address                String?
+  facebookUrl            String?
+  instagramUrl           String?
+  linkedinUrl            String?
+  youtubeUrl             String?
+  homepageBannerTitle    String?
   homepageBannerSubtitle String?
   homepageBannerImageUrl String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
 }

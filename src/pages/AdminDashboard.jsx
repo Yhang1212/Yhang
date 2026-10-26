@@ -1,118 +1,60 @@
+import { useCallback, useEffect, useState } from 'react';
+import { apiRequest, clearSession } from '../lib/api';
+import { ArrowLeft, BarChart3, Boxes, Building2, ChevronLeft, ChevronRight, CircleHelp, ImagePlus, LogOut, Menu, MessageSquare, Package, Plus, Save, Search, ShieldCheck, Trash2, Users, X } from 'lucide-react';
 import './AdminDashboard.css';
 
-const stats = [
-  { title: 'Revenue', value: '$84.2K', change: '+12.4%' },
-  { title: 'Orders', value: '1,248', change: '+8.1%' },
-  { title: 'Visitors', value: '32.7K', change: '+15.6%' },
-  { title: 'Messages', value: '96', change: '+4.2%' },
+const adminApi = (path, options = {}) => apiRequest(path, { ...options, auth: true });
+const blankProduct = { name:'', slug:'', description:'', price:'', stock:'0', categoryId:'', imageUrl:'', capacity:'', energyRating:'', warranty:'', isFeatured:false };
+const blankCategory = { name:'', slug:'', description:'' };
+const nav = [
+  ['overview','Overview',BarChart3],['products','Products',Package],['categories','Categories',Boxes],['inquiries','Inquiries',MessageSquare],['users','Users',Users],['company','Company',Building2],
 ];
-
-const recentProducts = [
-  { name: 'Frost Line 4-Door', status: 'Published', updated: '2h ago' },
-  { name: 'Glacier Pro French Door', status: 'Review', updated: '4h ago' },
-  { name: 'Nordik Counter-Depth', status: 'Draft', updated: 'Yesterday' },
-];
-
-const recentMessages = [
-  { sender: 'Mina Chen', subject: 'New showroom inquiry', time: '10 min ago' },
-  { sender: 'Daniel Brooks', subject: 'Delivery schedule request', time: '1h ago' },
-  { sender: 'Ava Morales', subject: 'Product availability question', time: '3h ago' },
-];
-
-const quickActions = ['Create campaign', 'Publish offer', 'Review leads', 'Send report'];
-
-function AdminDashboard() {
-  return (
-    <div className="admin-page">
-      <aside className="sidebar">
-        <div>
-          <div className="brand">HAILANG</div>
-          <div className="brand-subtitle">Admin Console</div>
-        </div>
-
-        <nav className="sidebar-nav">
-          <a className="active" href="#">Overview</a>
-          <a href="#">Products</a>
-          <a href="#">Orders</a>
-          <a href="#">Messages</a>
-          <a href="#">Settings</a>
-        </nav>
-      </aside>
-
-      <main className="dashboard-main">
-        <header className="topbar">
-          <div>
-            <p className="section-eyebrow">Operations</p>
-            <h1>Dashboard Overview</h1>
-          </div>
-
-          <div className="topbar-actions">
-            <button className="ghost-btn">Export</button>
-            <button className="primary-btn">+ New Report</button>
-          </div>
-        </header>
-
-        <section className="stats-grid">
-          {stats.map((item) => (
-            <article key={item.title} className="stat-card">
-              <p>{item.title}</p>
-              <h3>{item.value}</h3>
-              <span>{item.change}</span>
-            </article>
-          ))}
-        </section>
-
-        <section className="content-grid">
-          <div className="panel">
-            <div className="panel-header">
-              <h2>Recent Products</h2>
-              <a href="#">View all</a>
-            </div>
-            <ul className="list">
-              {recentProducts.map((product) => (
-                <li key={product.name}>
-                  <div>
-                    <strong>{product.name}</strong>
-                    <p>{product.updated}</p>
-                  </div>
-                  <span className="status-pill">{product.status}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="panel">
-            <div className="panel-header">
-              <h2>Recent Messages</h2>
-              <a href="#">Inbox</a>
-            </div>
-            <ul className="list">
-              {recentMessages.map((message) => (
-                <li key={message.subject}>
-                  <div>
-                    <strong>{message.sender}</strong>
-                    <p>{message.subject}</p>
-                  </div>
-                  <span className="time-pill">{message.time}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-
-        <section className="panel quick-actions-panel">
-          <div className="panel-header">
-            <h2>Quick Actions</h2>
-          </div>
-          <div className="actions-grid">
-            {quickActions.map((action) => (
-              <button key={action} className="action-btn">{action}</button>
-            ))}
-          </div>
-        </section>
-      </main>
-    </div>
-  );
+function slugify(value){return value.toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+function CategoryChart({ categories }) {
+  const max = Math.max(1, ...categories.map((item) => item._count?.products || 0));
+  return <section className="admin-panel admin-chart"><header><div><h2>Catalog by category</h2><p>Product records grouped by their assigned category</p></div></header>{categories.map((item) => { const count = item._count?.products || 0; return <div className="admin-chart-row" key={item.id}><span>{item.name}</span><div className="admin-chart-track"><i style={{ width: count ? Math.max(4, count / max * 100) + '%' : '0%' }} /></div><b>{count}</b></div>; })}{!categories.length&&<p className="admin-empty-inline">No category data available.</p>}</section>;
 }
-
+function AdminDashboard({onNavigate}) {
+  const [authorized,setAuthorized]=useState(false),[checking,setChecking]=useState(true),[section,setSection]=useState('overview'),[menu,setMenu]=useState(false);
+  const [products,setProducts]=useState([]),[categories,setCategories]=useState([]),[messages,setMessages]=useState([]),[users,setUsers]=useState([]),[settings,setSettings]=useState({}),[stats,setStats]=useState({});
+  const [query,setQuery]=useState(''),[page,setPage]=useState(1),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[dialog,setDialog]=useState('');
+  const [product,setProduct]=useState(blankProduct),[category,setCategory]=useState(blankCategory),[user,setUser]=useState({email:'',name:'',password:'',role:'USER'});
+  const [editId,setEditId]=useState(null);
+  const flash=(text)=>{setNotice(text);window.setTimeout(()=>setNotice(''),3500);};
+  const load=useCallback(async()=>{
+    const [p,c,m,s,u,st]=await Promise.all([
+      adminApi('/products'),adminApi('/categories'),adminApi('/contacts'),adminApi('/settings'),adminApi('/users'),adminApi('/dashboard/stats')
+    ]);
+    setProducts(p);setCategories(c);setMessages(m);setSettings(s||{});setUsers(u);setStats(st||{});
+  },[]);
+  useEffect(()=>{let live=true;(async()=>{try{const me=await adminApi('/auth/me');if(me.user?.role!=='ADMIN')throw new Error('Admin access required');if(live){setAuthorized(true);await load();}}catch(e){if(live)flash(e.message||'Please sign in with an administrator account.');}finally{if(live)setChecking(false);}})();return()=>{live=false;};},[load]);
+  const mutate=async(action,success)=>{setBusy(true);try{await action();await load();setDialog('');setEditId(null);flash(success);}catch(e){flash(e.message||'Could not save changes.');}finally{setBusy(false);}};
+  const filtered=products.filter(p=>[p.name,p.category?.name,p.slug].join(' ').toLowerCase().includes(query.toLowerCase()));
+  const pageCount=Math.max(1,Math.ceil(filtered.length/10)),rows=filtered.slice((page-1)*10,page*10);
+  const openProduct=(item)=>{setEditId(item?.id||null);setProduct(item?{...blankProduct,...item,categoryId:item.categoryId||'',price:String(item.price),stock:String(item.stock)}:blankProduct);setDialog('product');};
+  const saveProduct=(e)=>{e.preventDefault();mutate(()=>adminApi(editId?'/products/'+editId:'/products',{method:editId?'PUT':'POST',body:JSON.stringify({...product,price:Number(product.price),stock:Number(product.stock),categoryId:product.categoryId?Number(product.categoryId):null})}),editId?'Product updated':'Product added');};
+  const imageUpload=async(file)=>{if(!file)return;if(!file.type.startsWith('image/')||file.size>5*1024*1024){flash('Choose an image file smaller than 5 MB.');return;}const reader=new FileReader();reader.onload=()=>setProduct(p=>({...p,imageUrl:reader.result}));reader.readAsDataURL(file);};
+  const pageTitle=nav.find(item=>item[0]===section)?.[1]||'Overview';
+  if(checking)return <main className="admin-state" role="status">Checking administrator access…</main>;
+  if(!authorized)return <main className="admin-state"><div><ShieldCheck/><h1>Administrator sign-in required</h1><p>{notice||'Sign in with an administrator account to manage the catalog.'}</p><button className="admin-primary" onClick={()=>onNavigate?.('login')}>Sign in</button></div></main>;
+  return <main className="admin-workspace">
+    <aside className={'admin-sidebar'+(menu?' is-open':'')}><a className="admin-brand" href="#/" onClick={e=>{e.preventDefault();onNavigate?.('home');}}>HAILANG <span>ADMINISTRATION</span></a><button className="admin-mobile-close" onClick={()=>setMenu(false)} aria-label="Close navigation"><X/></button><nav aria-label="Admin navigation">{nav.map(([key,label,Icon])=><button key={key} className={section===key?'active':''} onClick={()=>{setSection(key);setMenu(false);}}><Icon size={17}/>{label}{key==='inquiries'&&messages.filter(m=>!m.isRead).length>0&&<span className="admin-badge">{messages.filter(m=>!m.isRead).length}</span>}</button>)}</nav><button className="admin-back" onClick={()=>onNavigate?.('home')}><ArrowLeft size={16}/> View website</button></aside>
+    {menu&&<button className="admin-scrim" aria-label="Close navigation" onClick={()=>setMenu(false)}/>}
+    <section className="admin-content"><header className="admin-topbar"><div className="admin-heading"><button className="admin-menu-trigger" onClick={()=>setMenu(true)} aria-label="Open navigation"><Menu/></button><div><p>HAILANG / MANAGEMENT</p><h1>{pageTitle}</h1></div></div><div className="admin-top-actions"><span>Administrator</span><button className="admin-secondary" onClick={()=>{clearSession();onNavigate?.('login');}}><LogOut size={15}/> Sign out</button></div></header>
+      {notice&&<div className="admin-toast" role="status">{notice}<button onClick={()=>setNotice('')} aria-label="Dismiss"><X size={15}/></button></div>}
+      {section==='overview'&&<><div className="admin-stat-grid">{[['Products',stats.totalProducts,Package],['Categories',stats.totalCategories,Boxes],['Inquiries',stats.totalMessages,MessageSquare],['Users',stats.totalUsers,Users]].map(([label,value,Icon])=><article className="admin-stat" key={label}><span><Icon size={18}/>{label}</span><strong>{value??'—'}</strong></article>)}</div><div className="admin-overview-grid"><section className="admin-panel"><header><div><h2>Recent products</h2><p>Catalog records currently published</p></div><button className="admin-text-button" onClick={()=>setSection('products')}>Manage products</button></header>{products.slice(0,5).map(p=><div className="admin-list-row" key={p.id}><span className="admin-list-image">{p.imageUrl?<img src={p.imageUrl} alt=""/>:<Package size={18}/>}</span><span><b>{p.name}</b><small>{p.category?.name||'Category not assigned'}</small></span><span>{p.price?Number(p.price).toLocaleString():'Price not set'}</span></div>)}{!products.length&&<p className="admin-empty-inline">No product records yet.</p>}</section><section className="admin-panel"><header><div><h2>Recent inquiries</h2><p>Messages submitted through the website</p></div><button className="admin-text-button" onClick={()=>setSection('inquiries')}>View inbox</button></header>{messages.slice(0,5).map(m=><div className="admin-message-row" key={m.id}><b>{m.name}</b><small>{m.subject||m.email}</small><span>{new Date(m.createdAt).toLocaleDateString()}</span></div>)}{!messages.length&&<p className="admin-empty-inline">No inquiries received yet.</p>}</section></div><CategoryChart categories={categories}/></>}
+      {section==='products'&&<><div className="admin-toolbar"><label className="admin-search"><Search size={16}/><input value={query} onChange={e=>{setQuery(e.target.value);setPage(1);}} placeholder="Search product catalog"/></label><button className="admin-primary" onClick={()=>openProduct(null)}><Plus size={16}/> Add product</button></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Price entered</th><th>Stock</th><th>Actions</th></tr></thead><tbody>{rows.map(p=><tr key={p.id}><td><span className="admin-table-product">{p.imageUrl?<img src={p.imageUrl} alt=""/>:<Package size={20}/>}<b>{p.name}</b></span></td><td>{p.category?.name||'—'}</td><td>{p.price?Number(p.price).toLocaleString():'—'}</td><td>{p.stock??'—'}</td><td><button className="admin-row-action" onClick={()=>openProduct(p)}>Edit</button><button className="admin-row-action danger" onClick={()=>window.confirm('Delete '+p.name+'?')&&mutate(()=>adminApi('/products/'+p.id,{method:'DELETE'}),'Product deleted')} aria-label={'Delete '+p.name}><Trash2 size={15}/></button></td></tr>)}</tbody></table>{!rows.length&&<p className="admin-empty-inline">No matching products. Add verified HAILANG product details when available.</p>}</div><div className="admin-pagination"><span>{filtered.length} product records</span><button disabled={page<=1} onClick={()=>setPage(page-1)} aria-label="Previous page"><ChevronLeft/></button><span>{page} / {pageCount}</span><button disabled={page>=pageCount} onClick={()=>setPage(page+1)} aria-label="Next page"><ChevronRight/></button></div></>}
+      {section==='categories'&&<><div className="admin-toolbar"><p>Use these categories to organize the public collection.</p><button className="admin-primary" onClick={()=>{setEditId(null);setCategory(blankCategory);setDialog('category');}}><Plus size={16}/> Add category</button></div><div className="admin-category-grid">{categories.map(c=><article className="admin-panel admin-category" key={c.id}><div><Boxes size={18}/><b>{c.name}</b><small>{c._count?.products??0} products · {c.slug}</small><p>{c.description||'No category description'}</p></div><footer><button className="admin-row-action" onClick={()=>{setEditId(c.id);setCategory(c);setDialog('category');}}>Edit</button><button className="admin-row-action danger" onClick={()=>window.confirm('Delete '+c.name+'?')&&mutate(()=>adminApi('/categories/'+c.id,{method:'DELETE'}),'Category deleted')}><Trash2 size={15}/></button></footer></article>)}</div></>}
+      {section==='inquiries'&&<div className="admin-inbox">{messages.map(m=><article className={'admin-panel admin-inquiry'+(!m.isRead?' unread':'')} key={m.id}><header><div><b>{m.name}</b><a href={'mailto:'+m.email}>{m.email}</a></div><time>{new Date(m.createdAt).toLocaleString()}</time></header><h3>{m.subject||'Website inquiry'}</h3><p>{m.message}</p>{m.phone&&<small>Phone: {m.phone}</small>}<footer>{!m.isRead&&<button className="admin-row-action" onClick={()=>mutate(()=>adminApi('/contacts/'+m.id+'/read',{method:'PATCH'}),'Inquiry marked as read')}>Mark read</button>}<button className="admin-row-action danger" onClick={()=>window.confirm('Delete this inquiry?')&&mutate(()=>adminApi('/contacts/'+m.id,{method:'DELETE'}),'Inquiry deleted')}><Trash2 size={15}/> Delete</button></footer></article>)}{!messages.length&&<p className="admin-empty-inline">Your inbox is empty.</p>}</div>}
+      {section==='users'&&<><div className="admin-toolbar"><p>Only administrators can access this list and manage account roles.</p><button className="admin-primary" onClick={()=>{setEditId(null);setUser({email:'',name:'',password:'',role:'USER'});setDialog('user');}}><Plus size={16}/> Add user</button></div><div className="admin-table-wrap"><table className="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead><tbody>{users.map(u=><tr key={u.id}><td>{u.name||'—'}</td><td>{u.email}</td><td>{u.role}</td><td>{new Date(u.createdAt).toLocaleDateString()}</td><td><button className="admin-row-action" onClick={()=>{setEditId(u.id);setUser({email:u.email,name:u.name||'',password:'',role:u.role});setDialog('user');}}>Edit</button><button className="admin-row-action danger" onClick={()=>window.confirm('Delete user '+u.email+'?')&&mutate(()=>adminApi('/users/'+u.id,{method:'DELETE'}),'User deleted')} aria-label={'Delete '+u.email}><Trash2 size={15}/></button></td></tr>)}</tbody></table>{!users.length&&<p className="admin-empty-inline">No user accounts found.</p>}</div></>}
+      {section==='company'&&<form className="admin-panel admin-settings-form" onSubmit={e=>{e.preventDefault();mutate(()=>adminApi('/settings',{method:'PUT',body:JSON.stringify(settings)}),'Company information saved');}}><p>Update company contact information and social links stored in the database.</p><div className="admin-form-grid">{[['companyName','Company name','text'],['email','Public email','email'],['phone','Public phone','tel'],['address','Address','text'],['facebookUrl','Facebook URL','url'],['instagramUrl','Instagram URL','url'],['linkedinUrl','LinkedIn URL','url'],['youtubeUrl','YouTube URL','url']].map(([key,label,type])=><label key={key}>{label}<input type={type} value={settings[key]||''} onChange={e=>setSettings({...settings,[key]:e.target.value})}/></label>)}</div><button className="admin-primary" disabled={busy}><Save size={16}/> Save company information</button></form>}
+    </section>
+    {dialog&&<div className="admin-modal-backdrop" onMouseDown={e=>e.target===e.currentTarget&&setDialog('')}><form className="admin-modal" onSubmit={dialog==='product'?saveProduct:e=>{e.preventDefault();const endpoint=dialog==='category'?'/categories':'/users';let body=dialog==='category'?{name:category.name,slug:category.slug,description:category.description}:{...user};if(dialog==='user'&&!body.password)delete body.password;mutate(()=>adminApi(editId?endpoint+'/'+editId:endpoint,{method:editId?'PUT':'POST',body:JSON.stringify(body)}),dialog==='category'?'Category saved':'User saved');}}><header><h2>{editId?'Edit':'Add'} {dialog}</h2><button type="button" aria-label="Close dialog" onClick={()=>setDialog('')}><X/></button></header>
+      {dialog==='product'&&<><label className="admin-upload">{product.imageUrl?<img src={product.imageUrl} alt="Product preview"/>:<ImagePlus size={24}/>}<span>Upload product image · JPG, PNG, WebP up to 5 MB</span><input type="file" accept="image/png,image/jpeg,image/webp" onChange={e=>imageUpload(e.target.files?.[0])}/></label><div className="admin-form-grid"><label>Product name<input required value={product.name} onChange={e=>setProduct({...product,name:e.target.value,slug:slugify(e.target.value)})}/></label><label>Slug<input required value={product.slug} onChange={e=>setProduct({...product,slug:e.target.value})}/></label><label>Price (as entered)<input required type="number" min="0" step="0.01" value={product.price} onChange={e=>setProduct({...product,price:e.target.value})}/></label><label>Stock count<input type="number" min="0" step="1" value={product.stock} onChange={e=>setProduct({...product,stock:e.target.value})}/></label><label>Category<select value={product.categoryId} onChange={e=>setProduct({...product,categoryId:e.target.value})}><option value="">No category</option>{categories.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label><label>Capacity (verified only)<input value={product.capacity||''} onChange={e=>setProduct({...product,capacity:e.target.value})}/></label><label>Energy rating<input value={product.energyRating||''} onChange={e=>setProduct({...product,energyRating:e.target.value})}/></label><label>Warranty<input value={product.warranty||''} onChange={e=>setProduct({...product,warranty:e.target.value})}/></label><label className="admin-checkbox"><input type="checkbox" checked={!!product.isFeatured} onChange={e=>setProduct({...product,isFeatured:e.target.checked})}/> Feature on homepage</label></div><label className="admin-description">Description<textarea rows="3" value={product.description||''} onChange={e=>setProduct({...product,description:e.target.value})}/></label></>}
+      {dialog==='category'&&<div className="admin-form-grid"><label>Category name<input required value={category.name} onChange={e=>setCategory({...category,name:e.target.value,slug:slugify(e.target.value)})}/></label><label>URL slug<input required value={category.slug} onChange={e=>setCategory({...category,slug:e.target.value})}/></label><label className="admin-image-url">Description<input value={category.description||''} onChange={e=>setCategory({...category,description:e.target.value})}/></label></div>}
+      {dialog==='user'&&<div className="admin-form-grid"><label>Name<input value={user.name} onChange={e=>setUser({...user,name:e.target.value})}/></label><label>Email<input required type="email" value={user.email} onChange={e=>setUser({...user,email:e.target.value})}/></label><label>{editId?'New password (optional)':'Temporary password'}<input type="password" minLength="8" required={!editId} value={user.password} onChange={e=>setUser({...user,password:e.target.value})}/></label><label>Role<select value={user.role} onChange={e=>setUser({...user,role:e.target.value})}><option value="USER">User</option><option value="ADMIN">Administrator</option></select></label></div>}
+      <footer><button type="button" className="admin-secondary" onClick={()=>setDialog('')}>Cancel</button><button className="admin-primary" disabled={busy}><Save size={15}/>{busy?'Saving…':'Save'}</button></footer>
+    </form></div>}
+  </main>;
+}
 export default AdminDashboard;
