@@ -16,7 +16,15 @@ import dashboardRouter from './routes/dashboard.js';
 import { getUsers } from './services/userService.js';
 import { authenticateToken, requireAdmin } from './middleware/auth.js';
 
-if (process.env.NODE_ENV === 'production' && (!process.env.JWT_SECRET || !process.env.REFRESH_SECRET || !process.env.CORS_ORIGIN)) {
+const nodeEnv = process.env.NODE_ENV;
+const isDevelopment = nodeEnv === 'development';
+const isProduction = nodeEnv === 'production';
+
+if (!isDevelopment && !isProduction) {
+  throw new Error('NODE_ENV must be explicitly set to development or production');
+}
+
+if (isProduction && (!process.env.JWT_SECRET || !process.env.REFRESH_SECRET || !process.env.CORS_ORIGIN)) {
   throw new Error('JWT_SECRET, REFRESH_SECRET, and CORS_ORIGIN must be set in production');
 }
 
@@ -25,7 +33,7 @@ const port = Number(process.env.PORT) || 5000;
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -34,16 +42,15 @@ app.use(helmet());
 const allowedOrigins = (process.env.CORS_ORIGIN || '').split(',').map((origin) => origin.trim()).filter(Boolean);
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || process.env.NODE_ENV !== 'production' || allowedOrigins.includes(origin)) return callback(null, true);
+    if (!origin || !isProduction || allowedOrigins.includes(origin)) return callback(null, true);
     return callback(new Error('Origin is not allowed by CORS'));
   },
   credentials: true,
 }));
 app.use(morgan('dev'));
+app.use('/health', healthRouter);
 app.use(limiter);
 app.use(express.json({ limit: '10mb' }));
-
-app.use('/health', healthRouter);
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 app.use('/categories', categoriesRouter);
@@ -75,5 +82,3 @@ app.use((err: unknown, _req: express.Request, res: express.Response, _next: expr
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
-
-

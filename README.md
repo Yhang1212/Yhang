@@ -47,7 +47,7 @@ In another terminal, run the frontend with `npm run dev`.
 
 ## Live login
 
-GitHub Pages hosts only the frontend. To use login on the live website, deploy the Express backend and PostgreSQL database to a hosting service. Configure `DATABASE_URL`, `JWT_SECRET`, `REFRESH_SECRET`, and `CORS_ORIGIN` in that service. Set `CORS_ORIGIN` to the exact deployed website origin (for GitHub Pages, for example, `https://yhang1212.github.io`), then seed a secure administrator account.
+GitHub Pages hosts only the frontend. To use login on the live website, deploy the Express backend and PostgreSQL database to a hosting service. Configure `NODE_ENV=production`, `DATABASE_URL`, `JWT_SECRET`, `REFRESH_SECRET`, and `CORS_ORIGIN` in that service. Set `CORS_ORIGIN` to the exact deployed website origin (for GitHub Pages, for example, `https://yhang1212.github.io`), then seed a secure administrator account.
 
 Add a GitHub Actions repository variable named `VITE_API_URL` containing the public backend URL, without a trailing slash. The Pages workflow passes it into the frontend build. Push to `main` or rerun the Pages workflow after setting the variable.
 

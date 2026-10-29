@@ -1,5 +1,3 @@
-.brand-logo { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); }
-.brand-logo__mark { display: block; width: 34px; height: 34px; color: #1b61ac; flex: 0 0 auto; }
+.brand-logo { display: inline-flex; align-items: center; color: var(--ink); }
 .brand-logo__name { font-family: var(--serif); font-size: 15px; line-height: 1; font-weight: 800; letter-spacing: .105em; }
 .brand-logo--inverse { color: #fff; }
-.brand-logo--inverse .brand-logo__mark { color: #fff; }

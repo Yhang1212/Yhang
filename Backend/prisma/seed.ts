@@ -3,9 +3,14 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
+  const development = process.env.NODE_ENV === 'development';
   const production = process.env.NODE_ENV === 'production';
-  const email = process.env.ADMIN_EMAIL || (production ? undefined : 'admin@example.com');
-  const password = process.env.ADMIN_PASSWORD || (production ? undefined : 'admin123');
+  if (!development && !production) {
+    throw new Error('NODE_ENV must be explicitly set to development or production before seeding.');
+  }
+
+  const email = process.env.ADMIN_EMAIL || (development ? 'admin@example.com' : undefined);
+  const password = process.env.ADMIN_PASSWORD || (development ? 'admin123' : undefined);
   if (!email || !password || (production && password.length < 12)) {
     throw new Error('Set ADMIN_EMAIL and a strong ADMIN_PASSWORD (at least 12 characters) before seeding in production.');
   }

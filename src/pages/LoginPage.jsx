@@ -127,7 +127,7 @@ function LoginPage({ onNavigate }) {
         <div className="auth-promo">
           <div className="auth-brand-row">
             <a className="auth-brand-lockup" href="#home" onClick={(event) => { event.preventDefault(); onNavigate('home'); }} aria-label="HAILANG home">
-              <span className="auth-brand-mark" aria-hidden="true"><i /></span><span>HAILANG</span>
+              <span>HAILANG</span>
             </a>
             <span className="auth-tagline">Better Cooling <b>&middot;</b> Better Living</span>
           </div>
@@ -182,8 +182,10 @@ function LoginPage({ onNavigate }) {
               <button className="auth-submit" type="submit" disabled={loading}>{loading ? <><span className="auth-spinner" /> Signing in…</> : <>Sign In <ArrowRight size={16} /></>}</button>
             </form>
             <div className="auth-divider"><span>or continue with</span></div>
-            <GoogleSignIn configured={googleReady} clientId={GOOGLE_CLIENT_ID} onSuccess={googleSuccess} onError={() => setError('Google sign-in was cancelled or could not be completed. Try again.')} />
-            <button type="button" className="auth-provider-button auth-phone-button" onClick={() => { setShowPhone(true); setError(''); }}><Phone size={17}/>Continue with phone number</button>
+            <div className="auth-login-providers">
+              <GoogleSignIn configured={googleReady} clientId={GOOGLE_CLIENT_ID} onSuccess={googleSuccess} onError={() => setError('Google sign-in was cancelled or could not be completed. Try again.')} />
+              <button type="button" className="auth-provider-button auth-phone-button" onClick={() => { setShowPhone(true); setError(''); }}><Phone size={17}/>Continue with phone number</button>
+            </div>
             <p className="auth-create-link">New to HAILANG? <button type="button" onClick={() => onNavigate('create-account')}>Create an account</button></p>
           </>}
           <p className="auth-security">Your credentials are verified by HAILANG's authentication service. Passwords are stored as secure hashes.</p>

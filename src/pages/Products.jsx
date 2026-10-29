@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, ImageOff, Search } from 'lucide-react';
+import { ArrowRight, ImageOff, Search, X } from 'lucide-react';
 import Container from '../components/common/Container';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
@@ -27,6 +27,7 @@ function Products({ onNavigate }) {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     let active = true;
@@ -40,6 +41,13 @@ function Products({ onNavigate }) {
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    if (!selectedProduct) return undefined;
+    const closeOnEscape = (event) => { if (event.key === 'Escape') setSelectedProduct(null); };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [selectedProduct]);
 
   const filtered = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -87,10 +95,10 @@ function Products({ onNavigate }) {
 
           {!loading && !error && visible.length > 0 && <div className="products-grid">
             {visible.map((product) => <article key={product.id} className="product-card">
-              <ProductPhoto product={product} />
+              <button type="button" className="product-image-button" onClick={() => setSelectedProduct(product)} aria-label={`View details for ${product.name}`}><ProductPhoto product={product} /></button>
               <div className="product-body">
                 <div className="product-topline"><span>{product.category?.name || 'Uncategorized'}</span>{product.isFeatured && <span className="product-featured">Featured</span>}</div>
-                <h2>{product.name}</h2>
+                <h2><button type="button" className="product-title-button" onClick={() => setSelectedProduct(product)}>{product.name}</button></h2>
                 {product.description && <p>{product.description}</p>}
                 {product.price !== undefined && product.price !== null && <p className="product-price">Price entered: {Number(product.price).toLocaleString()}</p>}
                 {(product.capacity || product.energyRating || product.warranty) && <dl className="product-facts">
@@ -98,6 +106,7 @@ function Products({ onNavigate }) {
                   {product.energyRating && <div><dt>Energy rating</dt><dd>{product.energyRating}</dd></div>}
                   {product.warranty && <div><dt>Warranty</dt><dd>{product.warranty}</dd></div>}
                 </dl>}
+                <button type="button" className="product-action product-details-action" onClick={() => setSelectedProduct(product)}>View product details <ArrowRight size={15} aria-hidden="true" /></button>
                 <a href="#contact" className="product-action" onClick={(event) => { event.preventDefault(); onNavigate?.('home'); window.setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 100); }}>Ask HAILANG about this product <ArrowRight size={15} aria-hidden="true" /></a>
               </div>
             </article>)}
@@ -108,6 +117,30 @@ function Products({ onNavigate }) {
           </nav>}
         </Container>
       </main>
+      {selectedProduct && <div className="product-detail-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedProduct(null); }}>
+        <section className="product-detail-dialog" role="dialog" aria-modal="true" aria-labelledby="product-detail-title">
+          <button type="button" className="product-detail-close" onClick={() => setSelectedProduct(null)} aria-label="Close product details"><X size={20} /></button>
+          <div className="product-detail-grid">
+            <div className="product-detail-photo">
+              {selectedProduct.imageUrl ? <img src={selectedProduct.imageUrl} alt={selectedProduct.name} /> : <div className="product-image-missing"><ImageOff size={28} aria-hidden="true" /><span>Product image not supplied</span></div>}
+            </div>
+            <div className="product-detail-content">
+              <p className="eyebrow">{selectedProduct.category?.name || 'HAILANG collection'}</p>
+              <h2 id="product-detail-title">{selectedProduct.name}</h2>
+              <p>{selectedProduct.description || 'More information about this product will be available soon.'}</p>
+              {selectedProduct.price !== undefined && selectedProduct.price !== null && <p className="product-price">Price entered: {Number(selectedProduct.price).toLocaleString()}</p>}
+              {(selectedProduct.capacity || selectedProduct.energyRating || selectedProduct.warranty) && <dl className="product-facts product-detail-facts">
+                {selectedProduct.capacity && <div><dt>Capacity</dt><dd>{selectedProduct.capacity}</dd></div>}
+                {selectedProduct.energyRating && <div><dt>Energy rating</dt><dd>{selectedProduct.energyRating}</dd></div>}
+                {selectedProduct.warranty && <div><dt>Warranty</dt><dd>{selectedProduct.warranty}</dd></div>}
+              </dl>}
+              {selectedProduct.features?.length > 0 && <div className="product-detail-list"><h3>Features</h3><ul>{selectedProduct.features.map((feature, index) => <li key={`${feature}-${index}`}>{feature}</li>)}</ul></div>}
+              {selectedProduct.specifications?.length > 0 && <div className="product-detail-list"><h3>Specifications</h3><ul>{selectedProduct.specifications.map((specification, index) => <li key={`${specification}-${index}`}>{specification}</li>)}</ul></div>}
+              <button type="button" className="product-detail-contact" onClick={() => { setSelectedProduct(null); onNavigate?.('home'); window.setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 100); }}>Ask HAILANG about this product <ArrowRight size={15} aria-hidden="true" /></button>
+            </div>
+          </div>
+        </section>
+      </div>}
       <Footer onNavigate={onNavigate} currentPage="products" />
     </>
   );

@@ -7,7 +7,16 @@
   overflow: hidden;
   padding: 0 0 42px;
   isolation: isolate;
+  background: #dce9f5;
+}
+.hero::before {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  content: '';
   background: url('../assets/images/home-background.jfif') center / cover no-repeat;
+  transform: scale(1);
+  will-change: transform, background-position;
 }
 .hero::after {
   position: absolute;
@@ -101,8 +110,8 @@
   .hero-benefits { gap: 14px; }
 }
 @media (max-width: 640px) {
-  .hero { min-height: 900px; padding-bottom: 36px; background-position: 43% center; }
-  .hero { background-position: 59% center; }
+  .hero { min-height: 900px; padding-bottom: 36px; }
+  .hero::before { background-position: 59% center; }
   .hero::after { background: linear-gradient(90deg, #ffffffa8 0%, #ffffff70 72%, #ffffff16 100%); }
   .hero-content { width: calc(100% - 36px); min-height: 900px; padding: 116px 0 280px; }
   .hero-copy { width: 100%; }
@@ -123,6 +132,22 @@
   .hero-bottom { right: 18px; bottom: 18px; left: 18px; padding-top: 12px; font-size: 7px; letter-spacing: .1em; }
   .hero-bottom a { font-size: 9px; }
 }
+@supports (animation-timeline: view()) {
+  .hero::before {
+    animation: hero-scroll-frames 1s steps(18, end) both;
+    animation-timeline: view(block);
+    animation-range: exit 0% exit 100%;
+  }
+}
+@keyframes hero-scroll-frames {
+  0% { transform: scale(1); background-position: 50% 50%; }
+  20% { transform: scale(1.035); background-position: 52% 48%; }
+  40% { transform: scale(1.075); background-position: 48% 52%; }
+  60% { transform: scale(1.12); background-position: 53% 50%; }
+  80% { transform: scale(1.17); background-position: 47% 48%; }
+  100% { transform: scale(1.22); background-position: 50% 52%; }
+}
 @media (prefers-reduced-motion: reduce) {
   .hero-button { transition: none; }
+  .hero::before { animation: none; }
 }

@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 import rateLimit from 'express-rate-limit';
 import { OAuth2Client } from 'google-auth-library';
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
@@ -94,7 +93,7 @@ router.post('/phone', providerLimiter, async (req, res) => {
   try { decoded = await firebase.verifyIdToken(idToken, true); }
   catch { return res.status(401).json({ message: 'Phone verification expired or could not be confirmed. Request a new code.' }); }
   const phone = decoded.phone_number;
-  if (!decoded.uid || !phone || !/^\\+855[1-9][0-9]{7,8}$/.test(phone)) return res.status(400).json({ message: 'Use a verified Cambodia phone number beginning with +855.' });
+  if (!decoded.uid || !phone || !/^\+855[1-9][0-9]{7,8}$/.test(phone)) return res.status(400).json({ message: 'Use a verified Cambodia phone number beginning with +855.' });
   try {
     let user = await prisma.user.findUnique({ where: { provider_providerId: { provider: 'PHONE', providerId: decoded.uid } } });
     if (user && user.phone !== phone) user = await prisma.user.update({ where: { id: user.id }, data: { phone } });

@@ -76,7 +76,6 @@
   background: #ffffffa8;
 }
 .navbar--home .nav-container { width: min(1328px, calc(100% - 64px)); height: 86px; }
-.navbar--home .brand-logo__mark { width: 48px; height: 48px; }
 .navbar--home .brand-logo__name { color: #0d2a55; font-size: 22px; letter-spacing: .09em; }
 .navbar--home .desktop-menu { gap: clamp(22px, 3vw, 44px); }
 .navbar--home .desktop-menu > a:first-child { position: relative; color: #0866e9; }
@@ -123,7 +122,6 @@
 @media (max-width: 760px) {
   .navbar--home { height: 68px; margin-bottom: -68px; }
   .navbar--home .nav-container { width: calc(100% - 32px); height: 68px; }
-  .navbar--home .brand-logo__mark { width: 39px; height: 39px; }
   .navbar--home .brand-logo__name { font-size: 17px; }
   .navbar--home .desktop-menu { gap: 0; background: #f8fbff; }
   .navbar--home .desktop-menu > a:first-child::after { display: none; }

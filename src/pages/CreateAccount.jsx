@@ -76,9 +76,9 @@ function CreateAccount({ onNavigate }) {
         <div className="auth-promo">
           <div className="auth-brand-row">
             <a className="auth-brand-lockup" href="#home" onClick={(event) => { event.preventDefault(); onNavigate('home'); }} aria-label="HAILANG home">
-              <span className="auth-brand-mark" aria-hidden="true"><i /></span><span>HAILANG</span>
+              <span>HAILANG</span>
             </a>
-            <span className="auth-tagline">Better Cooling <b>�</b> Better Living</span>
+            <span className="auth-tagline">Better Cooling <b>·</b> Better Living</span>
           </div>
           <div className="auth-promo-copy">
             <h1>Freshness<br />For Lifestyle</h1>
@@ -104,7 +104,7 @@ function CreateAccount({ onNavigate }) {
             <label htmlFor="confirm-password">Confirm password</label>
             <div className="auth-password-field"><LockKeyhole className="auth-field-icon" size={16} aria-hidden="true" /><input className="auth-icon-input" id="confirm-password" type={showConfirm ? 'text' : 'password'} autoComplete="new-password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} placeholder="Re-enter your password" minLength={8} maxLength={128} required /><button type="button" className="auth-visibility" onClick={() => setShowConfirm((value) => !value)} aria-label={showConfirm ? 'Hide confirmation password' : 'Show confirmation password'} aria-pressed={showConfirm}>{showConfirm ? <EyeOff size={17} /> : <Eye size={17} />}</button></div>
             {error && <p className="auth-error" role="alert"><AlertCircle size={17} />{error}</p>}
-            <button className="auth-submit" type="submit" disabled={loading}>{loading ? <><span className="auth-spinner" />Creating account�</> : <>Create Account <ArrowRight size={16} /></>}</button>
+            <button className="auth-submit" type="submit" disabled={loading}>{loading ? <><span className="auth-spinner" />Creating account…</> : <>Create Account <ArrowRight size={16} /></>}</button>
           </form>
           <div className="auth-divider"><span>or sign up with</span></div>
           <GoogleSignIn
@@ -117,7 +117,7 @@ function CreateAccount({ onNavigate }) {
           <p className="auth-security">New accounts receive standard customer access. Administrator access is assigned separately.</p>
         </div>
       </section>
-      <footer className="auth-footer">� {new Date().getFullYear()} HAILANG. All rights reserved.</footer>
+      <footer className="auth-footer">© {new Date().getFullYear()} HAILANG. All rights reserved.</footer>
     </main>
   );
 }
